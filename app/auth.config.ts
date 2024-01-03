@@ -1,6 +1,5 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-
 import bcryptjs from "bcryptjs";
 import { z } from "zod";
 
@@ -8,7 +7,8 @@ import prisma from "@config/database";
 
 export const authConfig: NextAuthConfig = {
   pages: {
-    signIn: "(routes)/auth/login",
+    signIn: "/auth/login",
+    newUser: "/auth/new-account",
   },
 
   callbacks: {
@@ -35,8 +35,8 @@ export const authConfig: NextAuthConfig = {
     },
 
     session({ session, token, user }) {
+      user;
       session.user = token.data as any;
-      console.log({ user });
       return session;
     },
   },
@@ -64,7 +64,7 @@ export const authConfig: NextAuthConfig = {
         // Regresar el usuario sin el password
         const { password: _, ...rest } = user;
 
-        return rest;
+        return rest as any;
       },
     }),
   ],

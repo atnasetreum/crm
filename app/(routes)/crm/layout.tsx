@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@app/auth.config";
 
+import MainLayout from '@components/layout/MainLayout'
+
 export default async function Layout({
   children,
 }: {
@@ -13,11 +15,5 @@ export default async function Layout({
     redirect("/auth/login");
   }
 
-  return (
-    <>
-      Navbar
-      <main>{children}</main>
-      Footer
-    </>
-  );
+  return <MainLayout>{children}</MainLayout>;
 }
