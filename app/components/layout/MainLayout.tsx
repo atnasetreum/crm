@@ -2,6 +2,8 @@
 
 import { ReactNode, useState } from "react";
 
+import { useSession } from "next-auth/react";
+
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -17,8 +19,8 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { MainListItems, SecondaryListItems } from "./MainMenu";
 
+import { MainListItems, SecondaryListItems } from "./MainMenu";
 import Copyright from "@app/components/layout/Copyright";
 
 const drawerWidth: number = 240;
@@ -73,6 +75,8 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(true);
+  const { data: session } = useSession();
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -105,7 +109,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
+            {session?.user.name}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">

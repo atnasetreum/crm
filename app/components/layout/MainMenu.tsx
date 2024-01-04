@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItem from "@mui/material/ListItem";
@@ -12,29 +15,33 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import { logout } from "@actions";
 
+const menu = [
+  {
+    href: "/crm/dashboard",
+    label: "Dashboard",
+    icon: <DashboardIcon />,
+  },
+  {
+    href: "/crm/clients",
+    label: "Clientes",
+    icon: <PeopleIcon />,
+  },
+];
+
 export const MainListItems = () => {
+  const pathname = usePathname();
   return (
     <>
-      <ListItem disablePadding>
-        <Link href="/crm/dashboard" passHref legacyBehavior>
-          <ListItemButton component="a">
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItemButton>
-        </Link>
-      </ListItem>
-      <ListItem disablePadding>
-        <Link href="/crm/clients" passHref legacyBehavior>
-          <ListItemButton component="a">
-            <ListItemIcon>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Clientes" />
-          </ListItemButton>
-        </Link>
-      </ListItem>
+      {menu.map((item) => (
+        <ListItem disablePadding key={item.href}>
+          <Link href={item.href} passHref legacyBehavior>
+            <ListItemButton component="a" selected={pathname === item.href}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+      ))}
     </>
   );
 };
