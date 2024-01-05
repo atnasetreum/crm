@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import { Provider } from "./components/providers";
 
@@ -11,6 +12,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "CRM",
+  manifest: "/manifest.json",
 };
 
 export default async function RootLayout({
@@ -21,7 +23,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <Provider>{children}</Provider>
+        <main>
+          <Provider>{children}</Provider>
+        </main>
+        <Script src="/service-worker.js" />
       </body>
     </html>
   );

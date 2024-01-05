@@ -74,7 +74,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MainLayout({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { data: session } = useSession();
 
   const toggleDrawer = () => {
@@ -87,7 +87,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <AppBar position="absolute" open={open}>
         <Toolbar
           sx={{
-            pr: "24px", // keep right padding when drawer closed
+            pr: "24px",
           }}
         >
           <IconButton

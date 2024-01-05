@@ -13,7 +13,7 @@ export default async function ClientsPage() {
             height: 240,
           }}
         >
-          aa
+          clients
         </Paper>
       </Grid>
       <Grid item xs={12} md={4} lg={3}>

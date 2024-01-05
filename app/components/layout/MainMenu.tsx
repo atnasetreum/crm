@@ -12,6 +12,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import BusinessIcon from "@mui/icons-material/Business";
 
 import { logout } from "@actions";
 
@@ -20,6 +21,11 @@ const menu = [
     href: "/crm/dashboard",
     label: "Dashboard",
     icon: <DashboardIcon />,
+  },
+  {
+    href: "/crm/projects",
+    label: "Proyectos",
+    icon: <BusinessIcon />,
   },
   {
     href: "/crm/clients",

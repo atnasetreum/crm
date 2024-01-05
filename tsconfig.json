@@ -22,10 +22,11 @@
       "@app/*": ["./app/*"],
       "@config/*": ["./app/config/*"],
       "@components/*": ["./app/components/*"],
-      "@interfaces/*": ["./app/interfaces/*"],
+      "@interfaces": ["./app/interfaces"],
       "@store/*": ["./app/store/*"],
       "@constants": ["./app/constants"],
-      "@actions": ["./app/actions"]
+      "@actions": ["./app/actions"],
+      "@shared/*": ["./app/shared/*"]
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true
