@@ -1,4 +1,4 @@
-export interface Projects {
+export interface Project {
   id: number;
   name: string;
   active: boolean;

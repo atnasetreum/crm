@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -17,6 +17,10 @@ import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useDebouncedCallback } from "use-debounce";
+
+import { Project } from "@interfaces";
+import FormProjects from "./FormProjects";
+import { findOneProject, refreshProjects } from "@actions";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,9 +63,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function FiltersProjetcs() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+    useState<null | HTMLElement>(null);
+  const [projectCurrent, setProjectCurrent] = useState<Project | null>(null);
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -79,7 +84,7 @@ export default function FiltersProjetcs() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMobileMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
@@ -153,54 +158,93 @@ export default function FiltersProjetcs() {
     </Menu>
   );
 
+  const findOne = async (id: number) => {
+    const { project } = await findOneProject(id);
+
+    if (project) {
+      setProjectCurrent(project);
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    const id = Number(params.get("id")) || 0;
+
+    if (id) {
+      findOne(id);
+    }
+  }, [searchParams]);
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="primary" elevation={1} sx={{}}>
-        <Toolbar>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Buscar…"
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => handleSearch(e.target.value)}
-              defaultValue={searchParams.get("query")?.toString()}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <AddIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <RefreshIcon />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+    <>
+      <FormProjects
+        handleClose={() => {
+          const params = new URLSearchParams(searchParams);
+          setProjectCurrent(null);
+          params.delete("id");
+          replace(`${pathname}?${params.toString()}`);
+        }}
+        projectCurrent={projectCurrent}
+      />
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" color="primary" elevation={1} sx={{}}>
+          <Toolbar>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Buscar…"
+                inputProps={{ "aria-label": "search" }}
+                onChange={(e) => handleSearch(e.target.value)}
+                defaultValue={searchParams.get("query")?.toString()}
+              />
+            </Search>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={() =>
+                  setProjectCurrent({
+                    id: 0,
+                    name: "",
+                    active: true,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                  })
+                }
+              >
+                <AddIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+                onClick={() => refreshProjects()}
+              >
+                <RefreshIcon />
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
+    </>
   );
 }

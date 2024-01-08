@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 
+import { Toaster } from "sonner";
+
 import { Provider } from "./components/providers";
 
 import "@fontsource/roboto/300.css";
@@ -24,7 +26,15 @@ export default async function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <main>
-          <Provider>{children}</Provider>
+          <Provider>
+            {children}
+            <Toaster
+              position="top-right"
+              expand={true}
+              richColors
+              closeButton
+            />
+          </Provider>
         </main>
         <Script src="/service-worker.js" />
       </body>

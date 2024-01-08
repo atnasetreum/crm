@@ -13,6 +13,9 @@ const loadData = async (query: string) =>
         mode: "insensitive",
       },
     },
+    orderBy: {
+      id: "desc",
+    },
   });
 
 export default async function ProjectsPage({
