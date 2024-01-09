@@ -1,37 +1,44 @@
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 
-export default async function ClientsPage() {
+import FiltersClients from "@components/crm/clients/FiltersClients";
+import TableClients from "@components/crm/clients/TableClients";
+import prisma from "@config/database";
+import { Client } from "@interfaces";
+
+const loadData = async (query: string) =>
+  prisma.client.findMany({
+    where: {
+      active: true,
+      name: {
+        contains: query,
+        mode: "insensitive",
+      },
+    },
+    include: {
+      projects: true,
+      comments: true,
+      createdBy: true,
+      updatedBy: true,
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
+
+export default async function ClientsPage({
+  searchParams: { query },
+}: {
+  searchParams: { query: string };
+}) {
+  const clients = await loadData(query);
+
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={8} lg={9}>
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            flexDirection: "column",
-            height: 240,
-          }}
-        >
-          clients
-        </Paper>
+      <Grid item xs={12} md={12} lg={12}>
+        <FiltersClients />
       </Grid>
-      <Grid item xs={12} md={4} lg={3}>
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            flexDirection: "column",
-            height: 240,
-          }}
-        >
-          bb
-        </Paper>
-      </Grid>
-      <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          cc
-        </Paper>
+      <Grid item xs={12} md={12} lg={12}>
+        <TableClients rows={clients as Client[]} />
       </Grid>
     </Grid>
   );

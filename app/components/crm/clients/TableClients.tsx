@@ -15,14 +15,14 @@ import {
   TableDefault,
 } from "@shared/components";
 import { infoCreate, infoUpdate } from "@shared/utils";
-import { Project } from "@interfaces";
-import DialogConfirmProjects from "./DialogConfirmProjects";
+import DialogConfirmClients from "./DialogConfirmClients";
+import { Client } from "@interfaces";
 
 interface Props {
-  rows: Project[];
+  rows: Client[];
 }
 
-export default function TableProjects({ rows }: Props) {
+export default function TableClients({ rows }: Props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [idCurrent, setIdCurrent] = useState<number>(0);
@@ -46,7 +46,7 @@ export default function TableProjects({ rows }: Props) {
 
   return (
     <>
-      <DialogConfirmProjects
+      <DialogConfirmClients
         idCurrent={idCurrent}
         handleClose={() => setIdCurrent(0)}
       />
@@ -59,19 +59,25 @@ export default function TableProjects({ rows }: Props) {
         headers={[
           "ID",
           "Nombre",
-          "No. de clientes",
-          "Creación",
-          "Actualización",
+          "Telefonos",
+          "Correos electrónicos",
+          "Estatus",
+          "Proyectos",
+          "Fecha de creación",
+          "Fecha de actualización",
           "Acciones",
         ]}
-        rowsRender={(row: Project) => (
+        rowsRender={(row: Client) => (
           <StyledTableRow key={row.id}>
             <StyledTableCell component="th" scope="row">
               {row.id}
             </StyledTableCell>
             <StyledTableCell>{row.name}</StyledTableCell>
-            <StyledTableCell style={{ width: 150 }}>
-              {row.clients.length}
+            <StyledTableCell>{row.phone}</StyledTableCell>
+            <StyledTableCell>{row.email}</StyledTableCell>
+            <StyledTableCell>{row.status}</StyledTableCell>
+            <StyledTableCell>
+              {row.projects.map((project) => project.name).join(", ")}
             </StyledTableCell>
             <StyledTableCell style={{ width: 250 }}>
               {infoCreate(row.createdAt, row.createdBy.name)}

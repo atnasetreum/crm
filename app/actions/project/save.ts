@@ -2,14 +2,25 @@
 
 import { revalidatePath } from "next/cache";
 
+import { Project } from "@prisma/client";
+
+import { auth } from "@app/auth.config";
 import prisma from "@config/database";
-import { Project } from "@interfaces";
 
 export const saveProject = async (projectCurrent: {
   id: number;
   name: string;
 }) => {
   try {
+    const session = await auth();
+
+    if (!session) {
+      return {
+        ok: false,
+        message: "No se ha iniciado sesión",
+      };
+    }
+
     let project: Project;
 
     if (projectCurrent.id) {
@@ -19,12 +30,14 @@ export const saveProject = async (projectCurrent: {
         },
         data: {
           name: projectCurrent.name,
+          updatedById: session.user.id,
         },
       });
     } else {
       project = await prisma.project.create({
         data: {
           name: projectCurrent.name,
+          createdById: session.user.id,
         },
       });
     }
@@ -38,7 +51,9 @@ export const saveProject = async (projectCurrent: {
   } catch (error) {
     return {
       ok: false,
-      message: "Error al crear el proyecto",
+      message: `Error al ${
+        projectCurrent.id ? "actualizar" : "crear"
+      } el proyecto`,
     };
   }
 };

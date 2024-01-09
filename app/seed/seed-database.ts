@@ -12,8 +12,23 @@ async function main() {
     data: users,
   });
 
+  const email = users[0].email;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) throw new Error("User not found: email" + email);
+
+  const { id: userId } = user;
+
   await prisma.project.createMany({
-    data: projects,
+    data: projects.map((project) => ({
+      name: project.name,
+      createdById: userId,
+    })),
   });
 
   console.log("Seed ejecutado correctamente");

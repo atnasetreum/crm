@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 
-import TableProjects from "@components/crm/projects/TableProjects";
 import FiltersProjetcs from "@components/crm/projects/FiltersProjetcs";
+import TableProjects from "@components/crm/projects/TableProjects";
 import prisma from "@config/database";
 
 const loadData = async (query: string) =>
@@ -12,6 +12,11 @@ const loadData = async (query: string) =>
         contains: query,
         mode: "insensitive",
       },
+    },
+    include: {
+      clients: true,
+      createdBy: true,
+      updatedBy: true,
     },
     orderBy: {
       id: "desc",

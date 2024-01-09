@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { toast } from "sonner";
-
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,7 +12,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 
 import { BootstrapDialog } from "@shared/components";
 import { saveProject } from "@actions";
-import { Project } from "@prisma/client";
+import { Project } from "@interfaces";
 
 interface Props {
   handleClose: () => void;

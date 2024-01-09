@@ -1,8 +1,8 @@
 import { Client, User } from "@prisma/client";
 
-export interface Project {
+export interface Comment {
   id: number;
-  name: string;
+  comment: string;
   active: boolean;
   createdAt: Date;
   createdById: number;
@@ -10,5 +10,6 @@ export interface Project {
   updatedAt: Date;
   updatedById: number | null;
   updatedBy: User | null;
-  clients: Client[];
+  client: Client;
+  clientId: number;
 }

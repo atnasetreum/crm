@@ -2,25 +2,25 @@
 
 import prisma from "@config/database";
 
-export const findOneProject = async (id: number) => {
+export const findOneClient = async (id: number) => {
   try {
-    const project = await prisma.project.findUnique({
+    const client = await prisma.client.findUnique({
       where: {
         id,
       },
       include: {
-        clients: true,
+        projects: true,
       },
     });
 
     return {
       ok: true,
-      project,
+      client,
     };
   } catch (error) {
     return {
       ok: false,
-      message: "Error al recuperar el proyecto",
+      message: "Error al recuperar el cliente",
     };
   }
 };

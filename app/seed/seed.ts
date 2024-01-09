@@ -34,7 +34,7 @@ export const initialData: SeedData = {
       name: "Valencia",
     },
     {
-      name: "Ciudad Marqués",
+      name: "Ciudad Marqués",
     },
   ],
 };
