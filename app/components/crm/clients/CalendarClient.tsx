@@ -15,6 +15,7 @@ import {
 
 import { Client } from "@interfaces";
 import FormCalendar from "./FormCalendar";
+import ListCalendar from "./ListCalendar";
 
 //import ListCalendar from "./ListCalendar";
 
@@ -29,15 +30,16 @@ function renderEventContent(event: EventContentArg) {
 
 interface Props {
   clientCurrent: Client | null;
+  events: EventInput[];
+  setEvents: (state: EventInput[]) => void;
 }
 
-const CalendarClient = ({ clientCurrent }: Props) => {
+const CalendarClient = ({ clientCurrent, events, setEvents }: Props) => {
   const calendarRef = useRef<FullCalendar>(null!);
   const [eventNew, setEventNew] = useState<DateClickArg | null>(null);
   const [eventSelected, setEventSelected] = useState<EventClickArg | null>(
     null
   );
-  const [events, setEvents] = useState<EventInput[]>([]);
 
   const addEvent = (event: EventInput) => setEvents([...events, event]);
 
@@ -84,7 +86,7 @@ const CalendarClient = ({ clientCurrent }: Props) => {
           />
         </Grid>
         <Grid item xs={12} md={5} lg={5}>
-          {/*<ListCalendar />*/}
+          <ListCalendar events={events} setEvents={setEvents} />
         </Grid>
       </Grid>
     </>

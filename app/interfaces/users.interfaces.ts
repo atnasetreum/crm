@@ -1,8 +1,11 @@
-import { Client, User } from "@interfaces";
+import { Project } from "@interfaces";
 
-export interface Comment {
+export interface User {
   id: number;
-  comment: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
   active: boolean;
   createdAt: Date;
   createdById: number;
@@ -10,6 +13,5 @@ export interface Comment {
   updatedAt: Date;
   updatedById: number | null;
   updatedBy: User | null;
-  client: Client;
-  clientId: number;
+  projects: Project[];
 }

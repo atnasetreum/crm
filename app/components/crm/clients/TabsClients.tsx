@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import AppBar from "@mui/material/AppBar";
+import { EventInput } from "@fullcalendar/core/index.js";
 
 import { TabPanel } from "@shared/components";
 import { Client } from "@interfaces";
@@ -18,6 +19,8 @@ interface Props {
   comments: string[];
   setComments: (state: string[]) => void;
   clientCurrent: Client | null;
+  events: EventInput[];
+  setEvents: (state: EventInput[]) => void;
 }
 
 export default function TabsClients({
@@ -26,6 +29,8 @@ export default function TabsClients({
   comments,
   setComments,
   clientCurrent,
+  events,
+  setEvents,
 }: Props) {
   const [value, setValue] = useState(0);
   const [activateTab, setActivateTab] = useState(false);
@@ -85,7 +90,11 @@ export default function TabsClients({
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Box sx={{ p: 2 }}>
-          <CalendarClient clientCurrent={clientCurrent} />
+          <CalendarClient
+            clientCurrent={clientCurrent}
+            events={events}
+            setEvents={setEvents}
+          />
         </Box>
       </TabPanel>
     </Box>

@@ -2,13 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 
+import { EventInput } from "@fullcalendar/core/index.js";
+
 import prisma from "@config/database";
 import { auth } from "@app/auth.config";
-import { ClientForm } from "@app/components/crm/clients/FormClients";
+import { ClientForm } from "@components/crm/clients/FormClients";
 
 interface Props extends ClientForm {
   id: number;
   comments: string[];
+  events: EventInput[];
 }
 
 export const saveClient = async (clientCurrent: Props) => {
@@ -45,6 +48,7 @@ export const saveClient = async (clientCurrent: Props) => {
         include: {
           projects: true,
           comments: true,
+          events: true,
         },
       });
     } else {
@@ -65,10 +69,21 @@ export const saveClient = async (clientCurrent: Props) => {
               createdById: session.user.id,
             })),
           },
+          events: {
+            create: clientCurrent.events.map((event) => {
+              const start = event?.start as Date;
+              return {
+                date: start,
+                comment: event.comment,
+                createdById: session.user.id,
+              };
+            }),
+          },
         },
         include: {
           projects: true,
           comments: true,
+          events: true,
         },
       });
     }

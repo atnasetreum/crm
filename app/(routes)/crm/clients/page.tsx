@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import FiltersClients from "@components/crm/clients/FiltersClients";
 import TableClients from "@components/crm/clients/TableClients";
 import prisma from "@config/database";
+import { Client } from "@interfaces";
 
 const loadData = async (query: string) =>
   prisma.client.findMany({
@@ -37,7 +38,7 @@ export default async function ClientsPage({
         <FiltersClients />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
-        <TableClients rows={clients} />
+        <TableClients rows={clients as Client[]} />
       </Grid>
     </Grid>
   );

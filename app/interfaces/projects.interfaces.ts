@@ -1,4 +1,4 @@
-import { Client, User } from "@prisma/client";
+import { Client, User } from "@interfaces";
 
 export interface Project {
   id: number;

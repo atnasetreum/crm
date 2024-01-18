@@ -1,16 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 import { EventClickArg, EventInput } from "@fullcalendar/core/index.js";
+import dayjs, { Dayjs } from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 
 import { Client } from "@interfaces";
+
+import "dayjs/locale/es";
 
 interface Props {
   eventNew: DateClickArg | null;
@@ -27,12 +32,24 @@ export default function FormCalendar({
   clientCurrent,
   addEvent,
 }: Props) {
-  const add = () => {
-    if (eventNew) {
-      addEvent({ title: "event 3", start: "2024-01-03T12:20:00" });
-    }
+  const [date, setDate] = useState<Dayjs | null>(dayjs());
+  const [comment, setComment] = useState<string>("");
 
+  const closeDialog = () => {
+    setDate(dayjs());
+    setComment("");
     handleClose();
+  };
+
+  const add = () => {
+    if (eventNew && date) {
+      addEvent({
+        title: "Cita",
+        start: date.toISOString(),
+        comment,
+      });
+    }
+    closeDialog();
   };
 
   useEffect(() => {
@@ -41,6 +58,9 @@ export default function FormCalendar({
 
   useEffect(() => {
     console.log({ eventNew });
+    if (eventNew) {
+      setDate(dayjs(eventNew.date));
+    }
   }, [eventNew]);
 
   useEffect(() => {
@@ -48,26 +68,33 @@ export default function FormCalendar({
   }, [eventSelected]);
 
   return (
-    <Dialog open={!!eventNew || !!eventSelected} onClose={handleClose}>
+    <Dialog open={!!eventNew || !!eventSelected} onClose={closeDialog}>
       <DialogTitle>{eventNew ? "Agregar cita" : "Editar cita"}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          To subscribe to this website, please enter your email address here. We
-          will send updates occasionally.
-        </DialogContentText>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+          <MobileDateTimePicker
+            defaultValue={dayjs("2022-04-17T15:30")}
+            slotProps={{
+              textField: { fullWidth: true },
+            }}
+            value={date}
+            onChange={(newValue) => setDate(newValue)}
+          />
+        </LocalizationProvider>
         <TextField
           autoFocus
           margin="dense"
           id="name"
-          label="Email Address"
-          type="email"
+          label="Comentarios"
+          type="text"
           fullWidth
-          variant="standard"
-          autoComplete="off"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          multiline
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant="contained" color="error">
+        <Button onClick={closeDialog} variant="contained" color="error">
           Cancelar
         </Button>
         <Button onClick={add} variant="contained" color="primary">

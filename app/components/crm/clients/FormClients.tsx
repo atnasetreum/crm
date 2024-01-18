@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { EventInput } from "@fullcalendar/core/index.js";
 
 import { Transition } from "@shared/components";
 import { Client } from "@interfaces";
@@ -42,16 +43,17 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
   const [stateForm, setStateForm] = useState<ClientForm>(formInitialClient);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<string[]>([]);
+  const [events, setEvents] = useState<EventInput[]>([]);
 
   const closeDialog = () => {
     handleClose();
     setStateForm(formInitialClient);
     setComments([]);
+    setEvents([]);
   };
 
   const save = async () => {
     setIsLoading(true);
-    closeDialog();
 
     if (clientCurrent) {
       setIsLoading(true);
@@ -59,6 +61,7 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
         id: clientCurrent.id,
         ...stateForm,
         comments,
+        events,
       }).finally(() => setIsLoading(false));
 
       if (!resp.ok) {
@@ -112,6 +115,8 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
         comments={comments}
         setComments={setComments}
         clientCurrent={clientCurrent}
+        events={events}
+        setEvents={setEvents}
       />
     </Dialog>
   );

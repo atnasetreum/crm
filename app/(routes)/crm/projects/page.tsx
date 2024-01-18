@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import FiltersProjetcs from "@components/crm/projects/FiltersProjetcs";
 import TableProjects from "@components/crm/projects/TableProjects";
 import prisma from "@config/database";
+import { Project } from "@interfaces";
 
 const loadData = async (query: string) =>
   prisma.project.findMany({
@@ -36,7 +37,7 @@ export default async function ProjectsPage({
         <FiltersProjetcs />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
-        <TableProjects rows={projects} />
+        <TableProjects rows={projects as Project[]} />
       </Grid>
     </Grid>
   );
