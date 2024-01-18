@@ -162,7 +162,7 @@ export default function FiltersProjetcs() {
     const { project } = await findOneProject(id);
 
     if (project) {
-      setProjectCurrent(project);
+      setProjectCurrent(project as Project);
     }
   };
 
@@ -207,15 +207,7 @@ export default function FiltersProjetcs() {
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
-                onClick={() =>
-                  setProjectCurrent({
-                    id: 0,
-                    name: "",
-                    active: true,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                  })
-                }
+                onClick={() => setProjectCurrent({} as Project)}
               >
                 <AddIcon />
               </IconButton>

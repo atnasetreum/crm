@@ -128,7 +128,8 @@ export default function ListComments({
                           variant="body2"
                           color="text.primary"
                         >
-                          {item.client.name || ""}
+                          aaa
+                          {/*{item.client.name || ""}*/}
                         </Typography>
                         {` — ${stringToDateWithTime(item.createdAt)}`}
                       </>

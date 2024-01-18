@@ -162,7 +162,7 @@ export default function FiltersClients() {
     const { client } = await findOneClient(id);
 
     if (client) {
-      setClientCurrent(client);
+      setClientCurrent(client as Client);
     }
   };
 
@@ -207,19 +207,7 @@ export default function FiltersClients() {
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
-                onClick={() =>
-                  setClientCurrent({
-                    id: 0,
-                    name: "",
-                    phone: "",
-                    email: "",
-                    status: "",
-                    active: true,
-                    projects: [],
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                  })
-                }
+                onClick={() => setClientCurrent({} as Client)}
               >
                 <AddIcon />
               </IconButton>

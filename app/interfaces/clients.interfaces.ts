@@ -7,6 +7,7 @@ export interface Client {
   email: string;
   status: string;
   birthdate: Date;
+
   active: boolean;
   createdAt: Date;
   createdById: number;
@@ -14,6 +15,7 @@ export interface Client {
   updatedAt: Date;
   updatedById: number | null;
   updatedBy: User | null;
+
   projects: Project[];
   comments: Comment[];
 }

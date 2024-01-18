@@ -85,7 +85,7 @@ export default function TabsClients({
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Box sx={{ p: 2 }}>
-          <CalendarClient />
+          <CalendarClient clientCurrent={clientCurrent} />
         </Box>
       </TabPanel>
     </Box>

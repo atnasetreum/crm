@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@config/database";
+//import prisma from "@config/database";
 import { Client } from "@interfaces";
 
 export const addComment = async (client: Client) => {
