@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from "@mui/icons-material/Info";
 
 import {
   StyledTableCell,
@@ -95,6 +96,19 @@ export default function TableClients({ rows }: Props) {
                     const params = new URLSearchParams(searchParams);
 
                     params.set("id", row.id.toString());
+                    params.set("edit", "0");
+
+                    replace(`${pathname}?${params.toString()}`);
+                  }}
+                >
+                  <InfoIcon color="primary" />
+                </Button>
+                <Button
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams);
+
+                    params.set("id", row.id.toString());
+                    params.set("edit", "1");
 
                     replace(`${pathname}?${params.toString()}`);
                   }}

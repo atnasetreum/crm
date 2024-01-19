@@ -1,4 +1,4 @@
-import { Comment, Project, User } from "@interfaces";
+import { Comment, Event, Project, User } from "@interfaces";
 export interface Client {
   id: number;
   name: string;
@@ -17,4 +17,5 @@ export interface Client {
 
   projects: Project[];
   comments: Comment[];
+  events: Event[];
 }

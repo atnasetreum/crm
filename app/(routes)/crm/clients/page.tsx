@@ -17,6 +17,7 @@ const loadData = async (query: string) =>
     include: {
       projects: true,
       comments: true,
+      events: true,
       createdBy: true,
       updatedBy: true,
     },

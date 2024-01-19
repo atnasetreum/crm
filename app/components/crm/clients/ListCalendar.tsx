@@ -16,9 +16,10 @@ import { stringToDateWithTime } from "@shared/utils";
 interface Props {
   events: EventInput[];
   setEvents: (state: EventInput[]) => void;
+  isConsult: boolean;
 }
 
-export default function ListCalendar({ events, setEvents }: Props) {
+export default function ListCalendar({ events, setEvents, isConsult }: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={12} lg={12}>
@@ -34,22 +35,24 @@ export default function ListCalendar({ events, setEvents }: Props) {
                 <ListItem
                   alignItems="flex-start"
                   secondaryAction={
-                    <>
-                      <IconButton edge="end" aria-label="comments">
-                        <EditCalendarIcon fontSize="large" color="warning" />
-                      </IconButton>
-                      <IconButton
-                        edge="end"
-                        aria-label="comments"
-                        onClick={() =>
-                          setEvents(
-                            events.filter((e) => e.start !== event.start)
-                          )
-                        }
-                      >
-                        <EventBusyIcon fontSize="large" color="error" />
-                      </IconButton>
-                    </>
+                    !isConsult && (
+                      <>
+                        <IconButton edge="end" aria-label="comments">
+                          <EditCalendarIcon fontSize="large" color="warning" />
+                        </IconButton>
+                        <IconButton
+                          edge="end"
+                          aria-label="comments"
+                          onClick={() =>
+                            setEvents(
+                              events.filter((e) => e.start !== event.start)
+                            )
+                          }
+                        >
+                          <EventBusyIcon fontSize="large" color="error" />
+                        </IconButton>
+                      </>
+                    )
                   }
                 >
                   <ListItemAvatar>

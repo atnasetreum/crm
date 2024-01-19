@@ -17,9 +17,10 @@ const options = [
 interface Props {
   value: string;
   onChange: (event: SelectChangeEvent) => void;
+  disabled?: boolean;
 }
 
-export function SelectStatus({ value, onChange }: Props) {
+export function SelectStatus({ value, onChange, disabled = false }: Props) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -30,6 +31,7 @@ export function SelectStatus({ value, onChange }: Props) {
           value={value}
           label="Estatus"
           onChange={onChange}
+          disabled={disabled}
         >
           {options.map((option) => (
             <MenuItem key={option} value={option}>

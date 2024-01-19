@@ -21,6 +21,7 @@ interface Props {
   clientCurrent: Client | null;
   events: EventInput[];
   setEvents: (state: EventInput[]) => void;
+  isConsult: boolean;
 }
 
 export default function TabsClients({
@@ -31,6 +32,7 @@ export default function TabsClients({
   clientCurrent,
   events,
   setEvents,
+  isConsult,
 }: Props) {
   const [value, setValue] = useState(0);
   const [activateTab, setActivateTab] = useState(false);
@@ -76,7 +78,11 @@ export default function TabsClients({
       </Box>
       <TabPanel value={value} index={0}>
         <Box sx={{ p: 2 }}>
-          <MainInfoClients stateForm={stateForm} setStateForm={setStateForm} />
+          <MainInfoClients
+            stateForm={stateForm}
+            setStateForm={setStateForm}
+            isConsult={isConsult}
+          />
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -85,6 +91,7 @@ export default function TabsClients({
             comments={comments}
             setComments={setComments}
             clientCurrent={clientCurrent}
+            isConsult={isConsult}
           />
         </Box>
       </TabPanel>
@@ -94,6 +101,7 @@ export default function TabsClients({
             clientCurrent={clientCurrent}
             events={events}
             setEvents={setEvents}
+            isConsult={isConsult}
           />
         </Box>
       </TabPanel>

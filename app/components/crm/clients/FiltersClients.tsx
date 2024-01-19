@@ -169,7 +169,7 @@ export default function FiltersClients() {
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
-    const id = Number(params.get("id")) || 0;
+    const id = Number(params.get("id") || 0);
 
     if (id) {
       findOne(id);
@@ -183,6 +183,7 @@ export default function FiltersClients() {
           const params = new URLSearchParams(searchParams);
           setClientCurrent(null);
           params.delete("id");
+          params.delete("edit");
           replace(`${pathname}?${params.toString()}`);
         }}
         clientCurrent={clientCurrent}

@@ -10,6 +10,18 @@ export const findOneClient = async (id: number) => {
       },
       include: {
         projects: true,
+        comments: {
+          include: {
+            createdBy: true,
+          },
+        },
+        events: {
+          include: {
+            createdBy: true,
+          },
+        },
+        createdBy: true,
+        updatedBy: true,
       },
     });
 

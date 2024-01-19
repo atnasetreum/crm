@@ -32,9 +32,15 @@ interface Props {
   clientCurrent: Client | null;
   events: EventInput[];
   setEvents: (state: EventInput[]) => void;
+  isConsult: boolean;
 }
 
-const CalendarClient = ({ clientCurrent, events, setEvents }: Props) => {
+const CalendarClient = ({
+  clientCurrent,
+  events,
+  setEvents,
+  isConsult,
+}: Props) => {
   const calendarRef = useRef<FullCalendar>(null!);
   const [eventNew, setEventNew] = useState<DateClickArg | null>(null);
   const [eventSelected, setEventSelected] = useState<EventClickArg | null>(
@@ -80,13 +86,17 @@ const CalendarClient = ({ clientCurrent, events, setEvents }: Props) => {
             eventAdd={(e) => {
               console.log(e);
             }}
-            dateClick={setEventNew}
-            eventClick={setEventSelected}
+            dateClick={(event) => !isConsult && setEventNew(event)}
+            eventClick={(event) => !isConsult && setEventSelected(event)}
             eventContent={renderEventContent}
           />
         </Grid>
         <Grid item xs={12} md={5} lg={5}>
-          <ListCalendar events={events} setEvents={setEvents} />
+          <ListCalendar
+            events={events}
+            setEvents={setEvents}
+            isConsult={isConsult}
+          />
         </Grid>
       </Grid>
     </>

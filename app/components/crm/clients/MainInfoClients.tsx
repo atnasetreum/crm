@@ -5,13 +5,15 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
 import { SelectMultiProjects, SelectStatus } from "@shared/components";
 import { ClientForm } from "./FormClients";
+import dayjs from "dayjs";
 
 interface Props {
   stateForm: ClientForm;
   setStateForm: (state: ClientForm) => void;
+  isConsult: boolean;
 }
 
-function MainInfoClients({ stateForm, setStateForm }: Props) {
+function MainInfoClients({ stateForm, setStateForm, isConsult }: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6} lg={6}>
@@ -20,6 +22,7 @@ function MainInfoClients({ stateForm, setStateForm }: Props) {
           variant="outlined"
           fullWidth
           autoComplete="off"
+          disabled={isConsult}
           value={stateForm.name}
           onChange={(e) =>
             setStateForm({
@@ -35,6 +38,7 @@ function MainInfoClients({ stateForm, setStateForm }: Props) {
           variant="outlined"
           fullWidth
           autoComplete="off"
+          disabled={isConsult}
           value={stateForm.phone}
           onChange={(e) =>
             setStateForm({
@@ -50,6 +54,7 @@ function MainInfoClients({ stateForm, setStateForm }: Props) {
           variant="outlined"
           fullWidth
           autoComplete="off"
+          disabled={isConsult}
           value={stateForm.email}
           onChange={(e) =>
             setStateForm({
@@ -61,6 +66,7 @@ function MainInfoClients({ stateForm, setStateForm }: Props) {
       </Grid>
       <Grid item xs={12} md={6} lg={6}>
         <SelectStatus
+          disabled={isConsult}
           value={stateForm.status}
           onChange={(e) =>
             setStateForm({
@@ -74,7 +80,8 @@ function MainInfoClients({ stateForm, setStateForm }: Props) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Fecha de nacimiento"
-            value={stateForm.birthdate}
+            disabled={isConsult}
+            value={stateForm.birthdate && dayjs(stateForm.birthdate)}
             onChange={(newValue) =>
               setStateForm({ ...stateForm, birthdate: newValue })
             }
@@ -87,6 +94,7 @@ function MainInfoClients({ stateForm, setStateForm }: Props) {
       </Grid>
       <Grid item xs={12} md={6} lg={6}>
         <SelectMultiProjects
+          disabled={isConsult}
           value={stateForm.projects}
           onChange={(newValue) =>
             setStateForm({ ...stateForm, projects: newValue })

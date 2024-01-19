@@ -32,9 +32,14 @@ function getStyles(name: string, personName: string[], theme: Theme) {
 interface Props {
   value: string[];
   onChange: (value: string[]) => void;
+  disabled?: boolean;
 }
 
-export function SelectMultiProjects({ value: valueCurrent, onChange }: Props) {
+export function SelectMultiProjects({
+  value: valueCurrent,
+  onChange,
+  disabled = false,
+}: Props) {
   const [options, setOptions] = useState<string[]>([]);
 
   const theme = useTheme();
@@ -70,6 +75,7 @@ export function SelectMultiProjects({ value: valueCurrent, onChange }: Props) {
           onChange={handleChange}
           input={<OutlinedInput label="Proyectos" />}
           MenuProps={MenuProps}
+          disabled={disabled}
         >
           {options.map((option) => (
             <MenuItem
