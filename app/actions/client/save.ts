@@ -58,7 +58,7 @@ export const saveClient = async (clientCurrent: Props) => {
           phone: clientCurrent.phone,
           email: clientCurrent.email,
           status: clientCurrent.status,
-          birthdate: clientCurrent?.birthdate ?? new Date(),
+          birthdate: clientCurrent?.birthdate?.toISOString(),
           projects: {
             connect: proyects,
           },

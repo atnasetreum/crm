@@ -5,7 +5,7 @@ export interface Client {
   phone: string;
   email: string;
   status: string;
-  birthdate: Date;
+  birthdate: Date | null;
 
   active: boolean;
   createdAt: Date;

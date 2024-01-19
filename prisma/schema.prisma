@@ -38,7 +38,7 @@ model Client {
   phone       String    
   email       String
   status      String
-  birthdate   DateTime   @db.Date
+  birthdate   DateTime?  @db.Date
   active      Boolean    @default(true)
   createdAt   DateTime   @default(now())
   createdById Int

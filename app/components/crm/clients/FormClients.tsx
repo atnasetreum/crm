@@ -64,17 +64,15 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
 
   useEffect(() => {
     if (clientCurrent?.id) {
-      const withBirthdate =
-        clientCurrent.createdAt.toISOString().split("T")[0] !==
-        clientCurrent.birthdate.toISOString().split("T")[0];
-
       setStateForm({
         ...stateForm,
         name: clientCurrent.name,
         phone: clientCurrent.phone,
         email: clientCurrent.email,
         status: clientCurrent.status,
-        birthdate: withBirthdate ? dayjs(clientCurrent.birthdate) : null,
+        birthdate: clientCurrent.birthdate
+          ? dayjs(clientCurrent.birthdate)
+          : null,
         projects: clientCurrent.projects.map((p) => p.name),
       });
 
