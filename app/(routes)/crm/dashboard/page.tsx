@@ -1,7 +1,28 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-export default function DashboardPage() {
+import ListEventsToday from "@components/crm/dashboard/ListEventsToday";
+import prisma from "@config/database";
+import { Event } from "@interfaces";
+
+const loadEvents = async () =>
+  prisma.event.findMany({
+    where: {
+      date: {
+        gte: new Date(),
+      },
+    },
+    include: {
+      client: true,
+      project: true,
+      createdBy: true,
+      updatedBy: true,
+    },
+  });
+
+export default async function DashboardPage() {
+  const events = await loadEvents();
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={8} lg={9}>
@@ -10,10 +31,9 @@ export default function DashboardPage() {
             p: 2,
             display: "flex",
             flexDirection: "column",
-            height: 240,
           }}
         >
-          dashboard
+          <ListEventsToday events={events as Event[]} />
         </Paper>
       </Grid>
       <Grid item xs={12} md={4} lg={3}>
@@ -22,16 +42,11 @@ export default function DashboardPage() {
             p: 2,
             display: "flex",
             flexDirection: "column",
-            height: 240,
           }}
-        >
-          bb
-        </Paper>
+        ></Paper>
       </Grid>
       <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          cc
-        </Paper>
+        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}></Paper>
       </Grid>
     </Grid>
   );

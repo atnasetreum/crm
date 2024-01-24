@@ -18,6 +18,7 @@ export const findOneClient = async (id: number) => {
         events: {
           include: {
             createdBy: true,
+            project: true,
           },
         },
         createdBy: true,

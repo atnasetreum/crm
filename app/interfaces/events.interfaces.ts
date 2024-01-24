@@ -1,4 +1,4 @@
-import { Client, User } from "@interfaces";
+import { Client, Project, User } from "@interfaces";
 
 export interface Event {
   id: number;
@@ -11,6 +11,10 @@ export interface Event {
   updatedAt: Date;
   updatedById: number | null;
   updatedBy: User | null;
+
   client: Client;
   clientId: number;
+
+  project: Project;
+  projectId: number;
 }

@@ -64,6 +64,7 @@ model Project {
   updatedBy   User?      @relation(fields: [updatedById], references: [id], name: "user_updater_project")
 
   clients     Client[]
+  events      Event[]
 }
 
 model Comment {
@@ -95,4 +96,7 @@ model Event {
 
   client      Client     @relation(fields: [clientId], references: [id])
   clientId    Int
+
+  project     Project     @relation(fields: [projectId], references: [id])
+  projectId    Int
 }

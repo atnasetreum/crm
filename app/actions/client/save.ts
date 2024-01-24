@@ -58,7 +58,9 @@ export const saveClient = async (clientCurrent: Props) => {
           phone: clientCurrent.phone,
           email: clientCurrent.email,
           status: clientCurrent.status,
-          birthdate: clientCurrent?.birthdate?.toISOString(),
+          ...(clientCurrent.birthdate && {
+            birthdate: `${clientCurrent.birthdate}`,
+          }),
           projects: {
             connect: proyects,
           },
@@ -72,10 +74,16 @@ export const saveClient = async (clientCurrent: Props) => {
           events: {
             create: clientCurrent.events.map((event) => {
               const start = event?.start as Date;
+
+              const project = proyects.find(
+                (project) => project.name === event.project
+              )!;
+
               return {
                 date: start,
                 comment: event.comment,
                 createdById: session.user.id,
+                projectId: project.id,
               };
             }),
           },

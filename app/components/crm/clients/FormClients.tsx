@@ -78,9 +78,11 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
 
       setEvents(
         clientCurrent.events.map((event) => ({
+          id: `${event.id}`,
           title: "Cita",
           start: event.date,
           comment: event.comment,
+          project: event.project.name,
         }))
       );
     }

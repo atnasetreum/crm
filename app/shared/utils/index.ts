@@ -4,6 +4,9 @@ import "moment/locale/es";
 export const stringToDateWithTime = (date: string | Date) =>
   moment(date).format("DD/MM/YYYY h:mm a");
 
+export const stringToDate = (date: string | Date) =>
+  moment(date).format("DD/MM/YYYY");
+
 export const infoCreate = (createdAt: Date, name: string) => {
   return `${stringToDateWithTime(createdAt)} ${name}`;
 };

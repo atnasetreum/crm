@@ -98,6 +98,7 @@ export default function TabsClients({
       <TabPanel value={value} index={2}>
         <Box sx={{ p: 2 }}>
           <CalendarClient
+            stateForm={stateForm}
             clientCurrent={clientCurrent}
             events={events}
             setEvents={setEvents}

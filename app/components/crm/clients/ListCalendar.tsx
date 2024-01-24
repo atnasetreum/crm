@@ -30,59 +30,68 @@ export default function ListCalendar({ events, setEvents, isConsult }: Props) {
                 new Date(a.start as string).getTime() -
                 new Date(b.start as string).getTime()
             )
-            .map((event) => (
-              <>
-                <ListItem
-                  alignItems="flex-start"
-                  secondaryAction={
-                    !isConsult && (
-                      <>
-                        <IconButton edge="end" aria-label="comments">
-                          <EditCalendarIcon fontSize="large" color="warning" />
-                        </IconButton>
-                        <IconButton
-                          edge="end"
-                          aria-label="comments"
-                          onClick={() =>
-                            setEvents(
-                              events.filter((e) => e.start !== event.start)
-                            )
-                          }
-                        >
-                          <EventBusyIcon fontSize="large" color="error" />
-                        </IconButton>
-                      </>
-                    )
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="https://static.vecteezy.com/system/resources/thumbnails/017/060/777/small/3d-calendar-with-clock-checkmark-icons-marked-date-notification-bell-isolated-schedule-appointment-concept-3d-render-illustration-png.png"
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={event.title}
-                    secondary={
-                      <>
-                        <Typography
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {event.comment}
-                        </Typography>
-                        {` ${event.comment ? "—" : ""} ${stringToDateWithTime(
-                          event.start as string
-                        )}`}
-                      </>
+            .map((event) => {
+              return (
+                <>
+                  <ListItem
+                    alignItems="flex-start"
+                    secondaryAction={
+                      !isConsult && (
+                        <>
+                          <IconButton edge="end" aria-label="comments">
+                            <EditCalendarIcon
+                              fontSize="large"
+                              color="warning"
+                            />
+                          </IconButton>
+                          <IconButton
+                            edge="end"
+                            aria-label="comments"
+                            onClick={() => {
+                              /*const eventCurrent = events.find(
+                                (e) => e.start === event.start
+                              );*/
+
+                              setEvents(
+                                events.filter((e) => e.start !== event.start)
+                              );
+                            }}
+                          >
+                            <EventBusyIcon fontSize="large" color="error" />
+                          </IconButton>
+                        </>
+                      )
                     }
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-              </>
-            ))}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src="https://static.vecteezy.com/system/resources/thumbnails/017/060/777/small/3d-calendar-with-clock-checkmark-icons-marked-date-notification-bell-isolated-schedule-appointment-concept-3d-render-illustration-png.png"
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={`${event.title} - ${event.project}`}
+                      secondary={
+                        <>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {event.comment}
+                          </Typography>
+                          {` ${event.comment ? "—" : ""} ${stringToDateWithTime(
+                            event.start as string
+                          )}`}
+                        </>
+                      }
+                    />
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+              );
+            })}
         </List>
       </Grid>
     </Grid>
