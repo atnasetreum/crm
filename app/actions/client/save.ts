@@ -43,6 +43,39 @@ export const saveClient = async (clientCurrent: Props) => {
         },
         data: {
           name: clientCurrent.name,
+          phone: clientCurrent.phone,
+          email: clientCurrent.email,
+          status: clientCurrent.status,
+          ...(clientCurrent.birthdate && {
+            birthdate: `${clientCurrent.birthdate}`,
+          }),
+          projects: {
+            set: proyects,
+          },
+          comments: {
+            create: clientCurrent.comments.map((comment) => ({
+              comment,
+              createdById: session.user.id,
+            })),
+          },
+          events: {
+            create: clientCurrent.events
+              .filter((event) => !event?.id)
+              .map((event) => {
+                const start = event?.start as Date;
+
+                const project = proyects.find(
+                  (project) => project.name === event.project
+                )!;
+
+                return {
+                  date: start,
+                  comment: event.comment,
+                  createdById: session.user.id,
+                  projectId: project.id,
+                };
+              }),
+          },
           updatedById: session.user.id,
         },
         include: {

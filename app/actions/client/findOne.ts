@@ -14,6 +14,9 @@ export const findOneClient = async (id: number) => {
           include: {
             createdBy: true,
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
         events: {
           include: {
