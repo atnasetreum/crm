@@ -22,6 +22,8 @@ interface Props {
   events: EventInput[];
   setEvents: (state: EventInput[]) => void;
   isConsult: boolean;
+  isNewProject: boolean;
+  setIsNewProject: (state: boolean) => void;
 }
 
 export default function TabsClients({
@@ -33,6 +35,8 @@ export default function TabsClients({
   events,
   setEvents,
   isConsult,
+  isNewProject,
+  setIsNewProject,
 }: Props) {
   const [value, setValue] = useState(0);
   const [activateTab, setActivateTab] = useState(false);
@@ -82,6 +86,8 @@ export default function TabsClients({
             stateForm={stateForm}
             setStateForm={setStateForm}
             isConsult={isConsult}
+            isNewProject={isNewProject}
+            setIsNewProject={setIsNewProject}
           />
         </Box>
       </TabPanel>

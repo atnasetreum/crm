@@ -26,6 +26,7 @@ export interface ClientForm {
   status: string;
   birthdate: Dayjs | null;
   projects: string[];
+  newProject: string;
 }
 
 interface Props {
@@ -40,6 +41,7 @@ const formInitialClient: ClientForm = {
   status: "Nuevo",
   birthdate: null,
   projects: [],
+  newProject: "",
 };
 
 export default function FormClients({ clientCurrent, handleClose }: Props) {
@@ -49,6 +51,7 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
   const [events, setEvents] = useState<EventInput[]>([]);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isConsult, setIsConsult] = useState<boolean>(false);
+  const [isNewProject, setIsNewProject] = useState(false);
 
   const searchParams = useSearchParams();
 
@@ -95,6 +98,7 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
     setEvents([]);
     setIsEdit(false);
     setIsConsult(false);
+    setIsNewProject(false);
   };
 
   const save = async () => {
@@ -165,6 +169,8 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
         events={events}
         setEvents={setEvents}
         isConsult={isConsult}
+        isNewProject={isNewProject}
+        setIsNewProject={setIsNewProject}
       />
     </Dialog>
   );

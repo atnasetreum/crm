@@ -85,7 +85,7 @@ export default function FormCalendar({
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={12} md={12} lg={12}>
             <SelectSingleProject
-              options={stateForm.projects}
+              options={[...stateForm.projects, stateForm.newProject]}
               value={project}
               onChange={(e) => setProject(e.target.value)}
             />

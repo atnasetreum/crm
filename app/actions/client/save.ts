@@ -25,13 +25,26 @@ export const saveClient = async (clientCurrent: Props) => {
       };
     }
 
+    const { newProject } = clientCurrent;
+
+    if (newProject) {
+      const project = await prisma.project.create({
+        data: {
+          name: newProject,
+          createdById: session.user.id,
+        },
+      });
+
+      clientCurrent.projects.push(project.name);
+    }
+
     let client;
 
     const proyects = await prisma.project.findMany({
       where: {
         active: true,
         name: {
-          in: clientCurrent.projects.map((project) => project),
+          in: clientCurrent.projects,
         },
       },
     });
