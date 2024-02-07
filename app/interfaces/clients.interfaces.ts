@@ -6,6 +6,7 @@ export interface Client {
   email: string;
   status: string;
   birthdate: Date | null;
+  reasonRejection?: string;
 
   active: boolean;
   createdAt: Date;

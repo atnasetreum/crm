@@ -62,6 +62,9 @@ export const saveClient = async (clientCurrent: Props) => {
           ...(clientCurrent.birthdate && {
             birthdate: `${clientCurrent.birthdate}`,
           }),
+          ...(clientCurrent.reasonRejection && {
+            reasonRejection: clientCurrent.reasonRejection,
+          }),
           projects: {
             set: proyects,
           },
@@ -106,6 +109,9 @@ export const saveClient = async (clientCurrent: Props) => {
           status: clientCurrent.status,
           ...(clientCurrent.birthdate && {
             birthdate: `${clientCurrent.birthdate}`,
+          }),
+          ...(clientCurrent.reasonRejection && {
+            reasonRejection: clientCurrent.reasonRejection,
           }),
           projects: {
             connect: proyects,

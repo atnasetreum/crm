@@ -33,23 +33,24 @@ model User {
 
 
 model Client {
-  id          Int        @id @default(autoincrement())
-  name        String     @unique
-  phone       String    
-  email       String
-  status      String
-  birthdate   DateTime?  @db.Date
-  active      Boolean    @default(true)
-  createdAt   DateTime   @default(now())
-  createdById Int
-  createdBy   User       @relation(fields: [createdById], references: [id], name: "user_creator_client")
-  updatedAt   DateTime   @updatedAt
-  updatedById Int?
-  updatedBy   User?      @relation(fields: [updatedById], references: [id], name: "user_updater_client")
+  id              Int        @id @default(autoincrement())
+  name            String     @unique
+  phone           String    
+  email           String
+  status          String
+  birthdate       DateTime?  @db.Date
+  reasonRejection String?    @default("")
+  active          Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  createdById     Int
+  createdBy       User       @relation(fields: [createdById], references: [id], name: "user_creator_client")
+  updatedAt       DateTime   @updatedAt
+  updatedById     Int?
+  updatedBy       User?      @relation(fields: [updatedById], references: [id], name: "user_updater_client")
 
-  projects    Project[]
-  comments    Comment[]
-  events      Event[]
+  projects        Project[]
+  comments        Comment[]
+  events          Event[]
 }
 
 model Project {

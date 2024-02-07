@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import dayjs from "dayjs";
 
+import { SelectReasonRejection } from "@shared/components/SelectReasonRejection";
 import { SelectMultiProjects, SelectStatus } from "@shared/components";
 import { ClientForm } from "./FormClients";
 
@@ -143,6 +144,20 @@ function MainInfoClients({
               setStateForm({
                 ...stateForm,
                 newProject: e.target.value,
+              })
+            }
+          />
+        </Grid>
+      )}
+      {stateForm.status === "Descartado" && (
+        <Grid item xs={12} md={6} lg={6}>
+          <SelectReasonRejection
+            disabled={isConsult}
+            value={stateForm.reasonRejection}
+            onChange={(e) =>
+              setStateForm({
+                ...stateForm,
+                reasonRejection: e.target.value,
               })
             }
           />

@@ -6,15 +6,17 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const options = [
-  "Apartado",
-  "Cita",
-  "Contactado",
-  "Descartado",
-  "Interesado",
-  "No contesta",
-  "Nuevo",
-  "Venta ganada",
-  "Visita",
+  "Asesor externo",
+  "Dejó de contestar",
+  "Fake",
+  "Nunca contestó",
+  "Presupuesto",
+  "Proveedor",
+  "Tiempo de compra",
+  "Tiempo de entrega",
+  "Tipo de crédito",
+  "Ubicación en Querétaro",
+  "Ubicación estado",
 ];
 
 interface Props {
@@ -23,16 +25,22 @@ interface Props {
   disabled?: boolean;
 }
 
-export function SelectStatus({ value, onChange, disabled = false }: Props) {
+export function SelectReasonRejection({
+  value,
+  onChange,
+  disabled = false,
+}: Props) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="status-simple-select-label">Estatus</InputLabel>
+        <InputLabel id="reason-simple-select-label">
+          Razon de rechazo
+        </InputLabel>
         <Select
-          labelId="status-simple-select-label"
-          id="status-simple-select"
+          labelId="reason-simple-select-label"
+          id="reason-simple-select"
           value={value}
-          label="Estatus"
+          label="Razon de rechazo"
           onChange={onChange}
           disabled={disabled}
         >

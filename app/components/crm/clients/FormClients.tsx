@@ -27,6 +27,7 @@ export interface ClientForm {
   birthdate: Dayjs | null;
   projects: string[];
   newProject: string;
+  reasonRejection: string;
 }
 
 interface Props {
@@ -42,6 +43,7 @@ const formInitialClient: ClientForm = {
   birthdate: null,
   projects: [],
   newProject: "",
+  reasonRejection: "",
 };
 
 export default function FormClients({ clientCurrent, handleClose }: Props) {
@@ -76,6 +78,7 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
         birthdate: clientCurrent.birthdate
           ? dayjs(clientCurrent.birthdate)
           : null,
+        reasonRejection: clientCurrent.reasonRejection || "",
         projects: clientCurrent.projects.map((p) => p.name),
       });
 
