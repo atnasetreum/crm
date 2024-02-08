@@ -6,6 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import AppBar from "@mui/material/AppBar";
 import { EventInput } from "@fullcalendar/core/index.js";
 
+import { OptionType } from "@shared/components/SelectCampaignType";
 import { TabPanel } from "@shared/components";
 import { Client } from "@interfaces";
 import MainInfoClients from "./MainInfoClients";
@@ -24,6 +25,7 @@ interface Props {
   isConsult: boolean;
   isNewProject: boolean;
   setIsNewProject: (state: boolean) => void;
+  campaignTypes: OptionType[];
 }
 
 export default function TabsClients({
@@ -37,6 +39,7 @@ export default function TabsClients({
   isConsult,
   isNewProject,
   setIsNewProject,
+  campaignTypes,
 }: Props) {
   const [value, setValue] = useState(0);
   const [activateTab, setActivateTab] = useState(false);
@@ -88,6 +91,7 @@ export default function TabsClients({
             isConsult={isConsult}
             isNewProject={isNewProject}
             setIsNewProject={setIsNewProject}
+            campaignTypes={campaignTypes}
           />
         </Box>
       </TabPanel>

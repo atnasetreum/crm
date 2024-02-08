@@ -40,6 +40,8 @@ model Client {
   status          String
   birthdate       DateTime?  @db.Date
   reasonRejection String?    @default("")
+  origin          String?    @default("")
+  campaignType    String?    @default("")
   active          Boolean    @default(true)
   createdAt       DateTime   @default(now())
   createdById     Int

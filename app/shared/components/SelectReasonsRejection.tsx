@@ -25,7 +25,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export function SelectReasonRejection({
+export function SelectReasonsRejection({
   value,
   onChange,
   disabled = false,

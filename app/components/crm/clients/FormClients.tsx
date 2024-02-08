@@ -14,10 +14,11 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { EventInput } from "@fullcalendar/core/index.js";
 import dayjs, { Dayjs } from "dayjs";
 
+import { OptionType } from "@shared/components/SelectCampaignType";
 import { Transition } from "@shared/components";
-import { Client } from "@interfaces";
-import { saveClient } from "@actions";
 import TabsClients from "./TabsClients";
+import { saveClient } from "@actions";
+import { Client } from "@interfaces";
 
 export interface ClientForm {
   name: string;
@@ -28,11 +29,14 @@ export interface ClientForm {
   projects: string[];
   newProject: string;
   reasonRejection: string;
+  origin: string;
+  campaignType: string;
 }
 
 interface Props {
   handleClose: () => void;
   clientCurrent: Client | null;
+  campaignTypes: OptionType[];
 }
 
 const formInitialClient: ClientForm = {
@@ -44,9 +48,15 @@ const formInitialClient: ClientForm = {
   projects: [],
   newProject: "",
   reasonRejection: "",
+  origin: "",
+  campaignType: "",
 };
 
-export default function FormClients({ clientCurrent, handleClose }: Props) {
+export default function FormClients({
+  clientCurrent,
+  handleClose,
+  campaignTypes,
+}: Props) {
   const [stateForm, setStateForm] = useState<ClientForm>(formInitialClient);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<string[]>([]);
@@ -79,7 +89,9 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
           ? dayjs(clientCurrent.birthdate)
           : null,
         reasonRejection: clientCurrent.reasonRejection || "",
+        origin: clientCurrent.origin || "",
         projects: clientCurrent.projects.map((p) => p.name),
+        campaignType: clientCurrent?.campaignType || "",
       });
 
       setEvents(
@@ -174,6 +186,7 @@ export default function FormClients({ clientCurrent, handleClose }: Props) {
         isConsult={isConsult}
         isNewProject={isNewProject}
         setIsNewProject={setIsNewProject}
+        campaignTypes={campaignTypes}
       />
     </Dialog>
   );

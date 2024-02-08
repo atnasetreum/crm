@@ -18,9 +18,10 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useDebouncedCallback } from "use-debounce";
 
-import { Client } from "@interfaces";
-import FormClients from "./FormClients";
+import { OptionType } from "@shared/components/SelectCampaignType";
 import { findOneClient, refreshClients } from "@actions";
+import FormClients from "./FormClients";
+import { Client } from "@interfaces";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,7 +63,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function FiltersClients() {
+interface Props {
+  campaignTypes: OptionType[];
+}
+
+export default function FiltersClients({ campaignTypes }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
@@ -187,6 +192,7 @@ export default function FiltersClients() {
           replace(`${pathname}?${params.toString()}`);
         }}
         clientCurrent={clientCurrent}
+        campaignTypes={campaignTypes}
       />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="primary" elevation={1} sx={{}}>

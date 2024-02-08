@@ -9,6 +9,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
+import Tooltip from "@mui/material/Tooltip";
 
 import {
   StyledTableCell,
@@ -18,6 +19,7 @@ import {
 import { infoCreate, infoUpdate } from "@shared/utils";
 import DialogConfirmClients from "./DialogConfirmClients";
 import { Client } from "@interfaces";
+import PopoverComments from "./PopoverComments";
 
 interface Props {
   rows: Client[];
@@ -91,33 +93,42 @@ export default function TableClients({ rows }: Props) {
                 variant="text"
                 aria-label="outlined primary button group"
               >
-                <Button
-                  onClick={() => {
-                    const params = new URLSearchParams(searchParams);
+                {!!row.comments.length && (
+                  <PopoverComments clientCurrent={row} />
+                )}
+                <Tooltip title="Detalles">
+                  <Button
+                    onClick={() => {
+                      const params = new URLSearchParams(searchParams);
 
-                    params.set("id", row.id.toString());
-                    params.set("edit", "0");
+                      params.set("id", row.id.toString());
+                      params.set("edit", "0");
 
-                    replace(`${pathname}?${params.toString()}`);
-                  }}
-                >
-                  <InfoIcon color="primary" />
-                </Button>
-                <Button
-                  onClick={() => {
-                    const params = new URLSearchParams(searchParams);
+                      replace(`${pathname}?${params.toString()}`);
+                    }}
+                  >
+                    <InfoIcon color="primary" />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Editar">
+                  <Button
+                    onClick={() => {
+                      const params = new URLSearchParams(searchParams);
 
-                    params.set("id", row.id.toString());
-                    params.set("edit", "1");
+                      params.set("id", row.id.toString());
+                      params.set("edit", "1");
 
-                    replace(`${pathname}?${params.toString()}`);
-                  }}
-                >
-                  <EditIcon color="warning" />
-                </Button>
-                <Button onClick={() => setIdCurrent(row.id)}>
-                  <DeleteIcon color="error" />
-                </Button>
+                      replace(`${pathname}?${params.toString()}`);
+                    }}
+                  >
+                    <EditIcon color="warning" />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Eliminar">
+                  <Button onClick={() => setIdCurrent(row.id)}>
+                    <DeleteIcon color="error" />
+                  </Button>
+                </Tooltip>
               </ButtonGroup>
             </StyledTableCell>
           </StyledTableRow>

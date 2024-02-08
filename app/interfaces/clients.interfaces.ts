@@ -7,6 +7,8 @@ export interface Client {
   status: string;
   birthdate: Date | null;
   reasonRejection?: string;
+  origin?: string;
+  campaignType?: string;
 
   active: boolean;
   createdAt: Date;

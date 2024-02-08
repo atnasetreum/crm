@@ -6,8 +6,12 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import dayjs from "dayjs";
 
-import { SelectReasonRejection } from "@shared/components/SelectReasonRejection";
+import { SelectReasonsRejection } from "@app/shared/components/SelectReasonsRejection";
 import { SelectMultiProjects, SelectStatus } from "@shared/components";
+import SelectCampaignType, {
+  OptionType,
+} from "@shared/components/SelectCampaignType";
+import { SelectOrigins } from "@shared/components/SelectOrigin";
 import { ClientForm } from "./FormClients";
 
 interface Props {
@@ -16,6 +20,7 @@ interface Props {
   isConsult: boolean;
   isNewProject: boolean;
   setIsNewProject: (state: boolean) => void;
+  campaignTypes: OptionType[];
 }
 
 function MainInfoClients({
@@ -24,6 +29,7 @@ function MainInfoClients({
   isConsult,
   isNewProject,
   setIsNewProject,
+  campaignTypes,
 }: Props) {
   return (
     <Grid container spacing={2}>
@@ -151,7 +157,7 @@ function MainInfoClients({
       )}
       {stateForm.status === "Descartado" && (
         <Grid item xs={12} md={6} lg={6}>
-          <SelectReasonRejection
+          <SelectReasonsRejection
             disabled={isConsult}
             value={stateForm.reasonRejection}
             onChange={(e) =>
@@ -163,6 +169,30 @@ function MainInfoClients({
           />
         </Grid>
       )}
+      <Grid item xs={12} md={6} lg={6}>
+        <SelectOrigins
+          disabled={isConsult}
+          value={stateForm.origin}
+          onChange={(e) =>
+            setStateForm({
+              ...stateForm,
+              origin: e.target.value,
+            })
+          }
+        />
+      </Grid>
+      <Grid item xs={12} md={6} lg={6}>
+        <SelectCampaignType
+          options={campaignTypes}
+          value={stateForm.campaignType}
+          onChange={(e) =>
+            setStateForm({
+              ...stateForm,
+              campaignType: e ? e.title : "",
+            })
+          }
+        />
+      </Grid>
     </Grid>
   );
 }

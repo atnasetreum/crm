@@ -65,6 +65,12 @@ export const saveClient = async (clientCurrent: Props) => {
           ...(clientCurrent.reasonRejection && {
             reasonRejection: clientCurrent.reasonRejection,
           }),
+          ...(clientCurrent.origin && {
+            origin: clientCurrent.origin,
+          }),
+          ...(clientCurrent.campaignType && {
+            campaignType: clientCurrent.campaignType,
+          }),
           projects: {
             set: proyects,
           },
@@ -112,6 +118,12 @@ export const saveClient = async (clientCurrent: Props) => {
           }),
           ...(clientCurrent.reasonRejection && {
             reasonRejection: clientCurrent.reasonRejection,
+          }),
+          ...(clientCurrent.origin && {
+            origin: clientCurrent.origin,
+          }),
+          ...(clientCurrent.campaignType && {
+            campaignType: clientCurrent.campaignType,
           }),
           projects: {
             connect: proyects,
