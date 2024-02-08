@@ -89,6 +89,7 @@ model Event {
   id          Int        @id @default(autoincrement())
   date        DateTime   
   comment     String
+  type        String
   active      Boolean    @default(true)
   createdAt   DateTime   @default(now())
   createdById Int

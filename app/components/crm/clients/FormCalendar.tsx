@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -13,6 +13,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import Grid from "@mui/material/Grid";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 import { Client } from "@interfaces";
 import { ClientForm } from "./FormClients";
@@ -40,11 +45,13 @@ export default function FormCalendar({
   const [date, setDate] = useState<Dayjs | null>(dayjs());
   const [comment, setComment] = useState<string>("");
   const [project, setProject] = useState<string>("");
+  const [type, setType] = useState<string>("");
 
   const closeDialog = () => {
     setDate(dayjs());
     setComment("");
     handleClose();
+    setType("");
   };
 
   const isDisabled = useMemo(() => {
@@ -52,9 +59,9 @@ export default function FormCalendar({
   }, [eventNew, date, project]);
 
   const add = () => {
-    if (eventNew && date && project) {
+    if (eventNew && date && project && type) {
       addEvent({
-        title: "Cita",
+        title: type,
         start: date.toISOString(),
         comment,
         project,
@@ -85,10 +92,41 @@ export default function FormCalendar({
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={12} md={12} lg={12}>
             <SelectSingleProject
-              options={[...stateForm.projects, stateForm.newProject]}
+              options={
+                stateForm.newProject
+                  ? [...stateForm.projects, stateForm.newProject]
+                  : stateForm.projects
+              }
               value={project}
               onChange={(e) => setProject(e.target.value)}
             />
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <FormControl>
+              <FormLabel id="demo-form-control-label-placement">Tipo</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-form-control-label-placement"
+                name="position"
+                defaultValue="top"
+                value={type}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setType((event.target as HTMLInputElement).value)
+                }
+              >
+                <FormControlLabel
+                  value="Cita"
+                  control={<Radio />}
+                  label="Cita"
+                />
+                <FormControlLabel
+                  value="Llamada"
+                  control={<Radio />}
+                  label="Llamada"
+                  labelPlacement="start"
+                />
+              </RadioGroup>
+            </FormControl>
           </Grid>
           <Grid item xs={12} md={12} lg={12}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">

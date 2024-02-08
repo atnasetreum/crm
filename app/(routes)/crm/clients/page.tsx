@@ -67,7 +67,6 @@ const loadCampaignTypes = () =>
   prisma.client.groupBy({
     by: ["campaignType"],
     where: {
-      active: true,
       NOT: {
         campaignType: "",
       },

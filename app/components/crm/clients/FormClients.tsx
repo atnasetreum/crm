@@ -97,7 +97,7 @@ export default function FormClients({
       setEvents(
         clientCurrent.events.map((event) => ({
           id: `${event.id}`,
-          title: "Cita",
+          title: event.type,
           start: event.date,
           comment: event.comment,
           project: event.project.name,

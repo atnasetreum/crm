@@ -93,6 +93,7 @@ export const saveClient = async (clientCurrent: Props) => {
                 return {
                   date: start,
                   comment: event.comment,
+                  type: event.title as string,
                   createdById: session.user.id,
                   projectId: project.id,
                 };
@@ -146,6 +147,7 @@ export const saveClient = async (clientCurrent: Props) => {
               return {
                 date: start,
                 comment: event.comment,
+                type: event.title as string,
                 createdById: session.user.id,
                 projectId: project.id,
               };

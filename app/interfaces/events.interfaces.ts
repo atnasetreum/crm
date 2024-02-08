@@ -4,6 +4,7 @@ export interface Event {
   id: number;
   date: Date;
   comment: string;
+  type: string;
   active: boolean;
   createdAt: Date;
   createdById: number;
