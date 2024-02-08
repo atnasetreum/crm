@@ -11,7 +11,7 @@ import { SelectMultiProjects, SelectStatus } from "@shared/components";
 import AutocompleteCampaignType, {
   OptionType,
 } from "@shared/components/AutocompleteCampaignType";
-import { SelectOrigins } from "@shared/components/SelectOrigin";
+import { SelectOrigins } from "@shared/components/SelectOrigins";
 import { ClientForm } from "./FormClients";
 
 interface Props {

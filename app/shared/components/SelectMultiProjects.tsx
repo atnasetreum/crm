@@ -64,30 +64,28 @@ export function SelectMultiProjects({
   }, []);
 
   return (
-    <div>
-      <FormControl sx={{ width: "100%" }}>
-        <InputLabel id="project-multiple-name-label">Proyectos</InputLabel>
-        <Select
-          labelId="project-multiple-name-label"
-          id="project-multiple-name"
-          multiple
-          value={valueCurrent}
-          onChange={handleChange}
-          input={<OutlinedInput label="Proyectos" />}
-          MenuProps={MenuProps}
-          disabled={disabled}
-        >
-          {options.map((option) => (
-            <MenuItem
-              key={option}
-              value={option}
-              style={getStyles(option, valueCurrent, theme)}
-            >
-              {option}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl sx={{ width: "100%" }}>
+      <InputLabel id="project-multiple-name-label">Proyectos</InputLabel>
+      <Select
+        labelId="project-multiple-name-label"
+        id="project-multiple-name"
+        multiple
+        value={valueCurrent}
+        onChange={handleChange}
+        input={<OutlinedInput label="Proyectos" />}
+        MenuProps={MenuProps}
+        disabled={disabled}
+      >
+        {options.map((option) => (
+          <MenuItem
+            key={option}
+            value={option}
+            style={getStyles(option, valueCurrent, theme)}
+          >
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

@@ -9,10 +9,12 @@ import prisma from "@config/database";
 interface SearchParamsProps {
   query: string;
   campaignType: string;
+  project: string;
+  origin: string;
 }
 
 const loadData = async (searchParams: SearchParamsProps) => {
-  const { query, campaignType } = searchParams;
+  const { query, campaignType, project, origin } = searchParams;
 
   const clients = await prisma.client.findMany({
     where: {
@@ -26,6 +28,16 @@ const loadData = async (searchParams: SearchParamsProps) => {
       }),
       ...(campaignType && {
         campaignType: campaignType,
+      }),
+      ...(project && {
+        projects: {
+          some: {
+            name: project,
+          },
+        },
+      }),
+      ...(origin && {
+        origin: origin,
       }),
     },
     include: {

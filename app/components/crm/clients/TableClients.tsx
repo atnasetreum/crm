@@ -65,8 +65,9 @@ export default function TableClients({ rows }: Props) {
           "Telefonos",
           "Correos electrónicos",
           "Estatus",
-          "Tipo de campaña",
           "Proyectos",
+          "Origen",
+          "Campaña",
           "Fecha de creación",
           "Fecha de actualización",
           "Acciones",
@@ -79,11 +80,15 @@ export default function TableClients({ rows }: Props) {
             <StyledTableCell>{row.name}</StyledTableCell>
             <StyledTableCell>{row.phone}</StyledTableCell>
             <StyledTableCell>{row.email}</StyledTableCell>
-            <StyledTableCell>{row.status}</StyledTableCell>
-            <StyledTableCell>{row.campaignType}</StyledTableCell>
+            <StyledTableCell>
+              {row.status}{" "}
+              {row.reasonRejection ? `(${row.reasonRejection})` : ""}
+            </StyledTableCell>
             <StyledTableCell>
               {row.projects.map((project) => project.name).join(", ")}
             </StyledTableCell>
+            <StyledTableCell>{row.origin}</StyledTableCell>
+            <StyledTableCell>{row.campaignType}</StyledTableCell>
             <StyledTableCell style={{ width: 250 }}>
               {infoCreate(row.createdAt, row.createdBy.name)}
             </StyledTableCell>

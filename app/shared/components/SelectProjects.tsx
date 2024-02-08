@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -5,30 +7,40 @@ import FormControl from "@mui/material/FormControl";
 import Paper from "@mui/material/Paper";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
+import { findAllProjects } from "@actions";
+
 interface Props {
   value: string;
   onChange: (event: SelectChangeEvent) => void;
   disabled?: boolean;
-  options: string[];
 }
 
-export function SelectCampaignType({
-  value,
-  onChange,
-  disabled = false,
-  options,
-}: Props) {
+export function SelectProjects({ value, onChange, disabled = false }: Props) {
+  const [options, setOptions] = useState<string[]>([]);
+
+  const findProjects = async () => {
+    const resp = await findAllProjects();
+
+    if (resp.ok && resp?.projects) {
+      setOptions(resp.projects.map((project) => project.name));
+    }
+  };
+
+  useEffect(() => {
+    findProjects();
+  }, []);
+
   return (
     <Box component={Paper} elevation={0}>
       <FormControl fullWidth>
-        <InputLabel id="campaign-types-simple-select-label">
-          Tipo de campaña
+        <InputLabel id="project-simple-types-simple-select-label">
+          Proyecto
         </InputLabel>
         <Select
-          labelId="campaign-types-simple-select-label"
-          id="campaign-types-simple-select"
+          labelId="project-simple-types-simple-select-label"
+          id="project-simple-types-simple-select"
           value={value}
-          label="Tipo de campaña"
+          label="Proyecto"
           onChange={onChange}
           disabled={disabled}
         >

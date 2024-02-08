@@ -8,6 +8,7 @@ import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,6 +22,8 @@ import { SelectChangeEvent } from "@mui/material";
 
 import { OptionType } from "@shared/components/AutocompleteCampaignType";
 import { SelectCampaignType } from "@shared/components/SelectCampaignType";
+import { SelectProjects } from "@shared/components/SelectProjects";
+import { SelectOrigins } from "@shared/components/SelectOrigins";
 import { findOneClient, refreshClients } from "@actions";
 import FormClients from "./FormClients";
 import { Client } from "@interfaces";
@@ -35,8 +38,8 @@ const Search = styled("div")(({ theme }) => ({
   //"&:hover": {
   //backgroundColor: alpha(theme.palette.common.black, 0.25),
   //},
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
+  // marginRight: theme.spacing(2),
+  // marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
@@ -213,32 +216,65 @@ export default function FiltersClients({ campaignTypes }: Props) {
           }}
         >
           <Toolbar>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Buscar…"
-                inputProps={{ "aria-label": "search" }}
-                onChange={(e) => handleSearch(e.target.value)}
-                defaultValue={searchParams.get("query")?.toString()}
-              />
-            </Search>
-            <SelectCampaignType
-              options={campaignTypes.map((item) => item.title)}
-              value={searchParams.get("campaignType")?.toString() || ""}
-              onChange={(event: SelectChangeEvent) => {
-                const params = new URLSearchParams(searchParams);
-
-                if (event.target.value) {
-                  params.set("campaignType", event.target.value);
-                } else {
-                  params.delete("campaignType");
-                }
-
-                replace(`${pathname}?${params.toString()}`);
-              }}
-            />
+            <Grid container spacing={1}>
+              <Grid item xs={12} md={4} lg={2}>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Buscar…"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    defaultValue={searchParams.get("query")?.toString()}
+                  />
+                </Search>
+              </Grid>
+              <Grid item xs={12} md={4} lg={2}>
+                <SelectProjects
+                  value={searchParams.get("project")?.toString() || ""}
+                  onChange={(event: SelectChangeEvent) => {
+                    const params = new URLSearchParams(searchParams);
+                    if (event.target.value) {
+                      params.set("project", event.target.value);
+                    } else {
+                      params.delete("project");
+                    }
+                    replace(`${pathname}?${params.toString()}`);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4} lg={2}>
+                <SelectOrigins
+                  isFilter={true}
+                  value={searchParams.get("origin")?.toString() || ""}
+                  onChange={(e) => {
+                    const params = new URLSearchParams(searchParams);
+                    if (e.target.value) {
+                      params.set("origin", e.target.value);
+                    } else {
+                      params.delete("origin");
+                    }
+                    replace(`${pathname}?${params.toString()}`);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4} lg={2}>
+                <SelectCampaignType
+                  options={campaignTypes.map((item) => item.title)}
+                  value={searchParams.get("campaignType")?.toString() || ""}
+                  onChange={(event: SelectChangeEvent) => {
+                    const params = new URLSearchParams(searchParams);
+                    if (event.target.value) {
+                      params.set("campaignType", event.target.value);
+                    } else {
+                      params.delete("campaignType");
+                    }
+                    replace(`${pathname}?${params.toString()}`);
+                  }}
+                />
+              </Grid>
+            </Grid>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
