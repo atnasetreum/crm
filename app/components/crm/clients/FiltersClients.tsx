@@ -17,19 +17,24 @@ import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useDebouncedCallback } from "use-debounce";
+import { SelectChangeEvent } from "@mui/material";
 
-import { OptionType } from "@shared/components/SelectCampaignType";
+import { OptionType } from "@shared/components/AutocompleteCampaignType";
+import { SelectCampaignType } from "@shared/components/SelectCampaignType";
 import { findOneClient, refreshClients } from "@actions";
 import FormClients from "./FormClients";
 import { Client } from "@interfaces";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
+  //borderRadius: theme.shape.borderRadius,
+  border: "1px solid #CBC",
+  //backgroundColor: "#FFF",
+  borderRadius: "5px",
+  //backgroundColor: alpha(theme.palette.common.black, 0.15),
+  //"&:hover": {
+  //backgroundColor: alpha(theme.palette.common.black, 0.25),
+  //},
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
@@ -52,7 +57,8 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
+    //padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(2, 2, 2, 1),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
@@ -195,7 +201,17 @@ export default function FiltersClients({ campaignTypes }: Props) {
         campaignTypes={campaignTypes}
       />
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color="primary" elevation={1} sx={{}}>
+        <AppBar
+          position="static"
+          color="inherit"
+          elevation={1}
+          sx={{
+            p: 1,
+            border: "2px solid #1976d2",
+            backgroundColor: "#FFF",
+            borderRadius: "5px",
+          }}
+        >
           <Toolbar>
             <Search>
               <SearchIconWrapper>
@@ -208,6 +224,21 @@ export default function FiltersClients({ campaignTypes }: Props) {
                 defaultValue={searchParams.get("query")?.toString()}
               />
             </Search>
+            <SelectCampaignType
+              options={campaignTypes.map((item) => item.title)}
+              value={searchParams.get("campaignType")?.toString() || ""}
+              onChange={(event: SelectChangeEvent) => {
+                const params = new URLSearchParams(searchParams);
+
+                if (event.target.value) {
+                  params.set("campaignType", event.target.value);
+                } else {
+                  params.delete("campaignType");
+                }
+
+                replace(`${pathname}?${params.toString()}`);
+              }}
+            />
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton

@@ -1,19 +1,32 @@
 import Grid from "@mui/material/Grid";
 
-import { OptionType } from "@shared/components/SelectCampaignType";
+import { OptionType } from "@shared/components/AutocompleteCampaignType";
 import FiltersClients from "@components/crm/clients/FiltersClients";
 import TableClients from "@components/crm/clients/TableClients";
-import prisma from "@config/database";
 import { Client } from "@interfaces";
+import prisma from "@config/database";
 
-const loadData = async (query: string) =>
-  prisma.client.findMany({
+interface SearchParamsProps {
+  query: string;
+  campaignType: string;
+}
+
+const loadData = async (searchParams: SearchParamsProps) => {
+  const { query, campaignType } = searchParams;
+
+  const clients = await prisma.client.findMany({
     where: {
       active: true,
-      name: {
-        contains: query,
-        mode: "insensitive",
-      },
+      ...(query && {
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          { phone: { contains: query, mode: "insensitive" } },
+          { email: { contains: query, mode: "insensitive" } },
+        ],
+      }),
+      ...(campaignType && {
+        campaignType: campaignType,
+      }),
     },
     include: {
       projects: true,
@@ -31,6 +44,9 @@ const loadData = async (query: string) =>
     },
   });
 
+  return clients;
+};
+
 const loadCampaignTypes = () =>
   prisma.client.groupBy({
     by: ["campaignType"],
@@ -43,11 +59,11 @@ const loadCampaignTypes = () =>
   });
 
 export default async function ClientsPage({
-  searchParams: { query },
+  searchParams,
 }: {
-  searchParams: { query: string };
+  searchParams: SearchParamsProps;
 }) {
-  const clients = await loadData(query);
+  const clients = await loadData(searchParams);
 
   const campaignTypes = await loadCampaignTypes();
 

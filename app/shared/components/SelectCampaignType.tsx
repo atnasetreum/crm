@@ -1,82 +1,45 @@
-import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-
-export interface OptionType {
-  inputValue?: string;
-  title: string;
-}
-
-const filter = createFilterOptions<OptionType>();
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Paper from "@mui/material/Paper";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 interface Props {
   value: string;
-  onChange: (event: OptionType | null) => void;
+  onChange: (event: SelectChangeEvent) => void;
   disabled?: boolean;
-  options: OptionType[];
+  options: string[];
 }
 
-export default function SelectCampaignType({
+export function SelectCampaignType({
   value,
   onChange,
   disabled = false,
   options,
 }: Props) {
   return (
-    <Autocomplete
-      disabled={disabled}
-      value={value}
-      onChange={(_, newValue) => {
-        if (typeof newValue === "string") {
-          onChange({
-            title: newValue,
-          });
-        } else if (newValue && newValue.inputValue) {
-          onChange({
-            title: newValue.inputValue,
-          });
-        } else {
-          onChange(newValue);
-        }
-      }}
-      filterOptions={(options, params) => {
-        const filtered = filter(options, params);
-
-        const { inputValue } = params;
-
-        const isExisting = options.some(
-          (option) => inputValue === option.title
-        );
-        if (inputValue !== "" && !isExisting) {
-          filtered.push({
-            inputValue,
-            title: `Add "${inputValue}"`,
-          });
-        }
-
-        return filtered;
-      }}
-      selectOnFocus
-      clearOnBlur
-      handleHomeEndKeys
-      id="campaign-type-free-solo-with-text-demo"
-      options={options}
-      getOptionLabel={(option) => {
-        if (typeof option === "string") {
-          return option;
-        }
-
-        if (option.inputValue) {
-          return option.inputValue;
-        }
-
-        return option.title;
-      }}
-      renderOption={(props, option) => <li {...props}>{option.title}</li>}
-      fullWidth
-      freeSolo
-      renderInput={(params) => (
-        <TextField {...params} label="Tipo de campaña" />
-      )}
-    />
+    <Box sx={{ minWidth: 250 }} component={Paper} elevation={0}>
+      <FormControl fullWidth>
+        <InputLabel id="campaign-types-simple-select-label">
+          Tipo de campaña
+        </InputLabel>
+        <Select
+          labelId="campaign-types-simple-select-label"
+          id="campaign-types-simple-select"
+          value={value}
+          label="Tipo de campaña"
+          onChange={onChange}
+          disabled={disabled}
+        >
+          <MenuItem value="">Ninguno</MenuItem>
+          {options.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
   );
 }

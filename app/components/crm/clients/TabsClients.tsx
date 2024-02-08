@@ -6,7 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import AppBar from "@mui/material/AppBar";
 import { EventInput } from "@fullcalendar/core/index.js";
 
-import { OptionType } from "@shared/components/SelectCampaignType";
+import { OptionType } from "@shared/components/AutocompleteCampaignType";
 import { TabPanel } from "@shared/components";
 import { Client } from "@interfaces";
 import MainInfoClients from "./MainInfoClients";

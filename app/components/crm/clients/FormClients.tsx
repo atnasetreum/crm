@@ -14,7 +14,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { EventInput } from "@fullcalendar/core/index.js";
 import dayjs, { Dayjs } from "dayjs";
 
-import { OptionType } from "@shared/components/SelectCampaignType";
+import { OptionType } from "@shared/components/AutocompleteCampaignType";
 import { Transition } from "@shared/components";
 import TabsClients from "./TabsClients";
 import { saveClient } from "@actions";

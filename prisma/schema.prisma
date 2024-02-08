@@ -34,8 +34,8 @@ model User {
 
 model Client {
   id              Int        @id @default(autoincrement())
-  name            String     @unique
-  phone           String    
+  name            String     
+  phone           String     @unique
   email           String
   status          String
   birthdate       DateTime?  @db.Date

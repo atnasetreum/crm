@@ -8,9 +8,9 @@ import dayjs from "dayjs";
 
 import { SelectReasonsRejection } from "@app/shared/components/SelectReasonsRejection";
 import { SelectMultiProjects, SelectStatus } from "@shared/components";
-import SelectCampaignType, {
+import AutocompleteCampaignType, {
   OptionType,
-} from "@shared/components/SelectCampaignType";
+} from "@shared/components/AutocompleteCampaignType";
 import { SelectOrigins } from "@shared/components/SelectOrigin";
 import { ClientForm } from "./FormClients";
 
@@ -182,7 +182,8 @@ function MainInfoClients({
         />
       </Grid>
       <Grid item xs={12} md={6} lg={6}>
-        <SelectCampaignType
+        <AutocompleteCampaignType
+          disabled={isConsult}
           options={campaignTypes}
           value={stateForm.campaignType}
           onChange={(e) =>
