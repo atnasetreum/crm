@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import LoadingButton from "@mui/lab/LoadingButton";
 import Dialog from "@mui/material/Dialog";
@@ -6,7 +6,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "sonner";
 
-import { removeClient, removeProject } from "@actions";
+import { findOneClient, removeClient } from "@actions";
+import { Client } from "@interfaces";
 
 interface Props {
   idCurrent: number;
@@ -18,6 +19,7 @@ export default function DialogConfirmClients({
   handleClose,
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   const remove = async () => {
     setIsLoading(true);
@@ -30,10 +32,32 @@ export default function DialogConfirmClients({
       return toast.error(resp.message);
     }
 
-    toast.success("Client eliminado");
+    toast.success(
+      `El cliente ha sido ${
+        isActive ? "desactivado" : "activado"
+      } correctamente`
+    );
 
     handleClose();
   };
+
+  const getDataClient = async () => {
+    if (!idCurrent) {
+      return;
+    }
+
+    const resp = await findOneClient(idCurrent);
+
+    if (!resp.ok) {
+      return toast.error(resp.message);
+    }
+
+    setIsActive(resp.client!.active);
+  };
+
+  useEffect(() => {
+    getDataClient();
+  }, [idCurrent]);
 
   return (
     <Dialog
@@ -43,7 +67,9 @@ export default function DialogConfirmClients({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"¿Confirma la eliminación del registro?"}
+        {`¿Estás seguro que deseas ${
+          isActive ? "DESACTIVAR" : "ACTIVAR"
+        } este cliente?`}
       </DialogTitle>
       <DialogActions>
         <LoadingButton

@@ -19,6 +19,9 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useDebouncedCallback } from "use-debounce";
 import { SelectChangeEvent } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import Tooltip from "@mui/material/Tooltip";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
 
 import { OptionType } from "@shared/components/AutocompleteCampaignType";
 import { SelectCampaignType } from "@shared/components/SelectCampaignType";
@@ -268,6 +271,29 @@ export default function FiltersClients({ campaignTypes }: Props) {
                     handleSearch(e.target.value, "campaignType")
                   }
                 />
+              </Grid>
+              <Grid item xs={12} md={4} lg={2}>
+                <Box sx={{ mt: 1 }}>
+                  <Tooltip
+                    title={`${
+                      getCurrentValueFilter("deletedUsers") === "true"
+                        ? "Excluir"
+                        : "Incluir"
+                    } usuarios eliminados`}
+                  >
+                    <Checkbox
+                      icon={<PersonOffIcon />}
+                      checkedIcon={<PersonOffIcon />}
+                      checked={getCurrentValueFilter("deletedUsers") === "true"}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        handleSearch(
+                          e.target.checked ? `${e.target.checked}` : "",
+                          "deletedUsers"
+                        )
+                      }
+                    />
+                  </Tooltip>
+                </Box>
               </Grid>
             </Grid>
             <Box sx={{ flexGrow: 1 }} />

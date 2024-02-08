@@ -12,14 +12,19 @@ interface SearchParamsProps {
   project: string;
   origin: string;
   status: string;
+  deletedUsers: string;
+  discardedUsers: string;
 }
 
 const loadData = async (searchParams: SearchParamsProps) => {
-  const { query, campaignType, project, origin, status } = searchParams;
+  const { query, campaignType, project, origin, status, deletedUsers } =
+    searchParams;
 
   const clients = await prisma.client.findMany({
     where: {
-      active: true,
+      ...(!deletedUsers && {
+        active: true,
+      }),
       ...(query && {
         OR: [
           { name: { contains: query, mode: "insensitive" } },

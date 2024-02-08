@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import Tooltip from "@mui/material/Tooltip";
+import BeenhereIcon from "@mui/icons-material/Beenhere";
 
 import {
   StyledTableCell,
@@ -73,7 +74,10 @@ export default function TableClients({ rows }: Props) {
           "Acciones",
         ]}
         rowsRender={(row: Client) => (
-          <StyledTableRow key={row.id}>
+          <StyledTableRow
+            key={row.id}
+            style={{ backgroundColor: row.active ? "" : "#ffcdd2" }}
+          >
             <StyledTableCell component="th" scope="row">
               {row.id}
             </StyledTableCell>
@@ -129,11 +133,19 @@ export default function TableClients({ rows }: Props) {
                     <EditIcon color="warning" />
                   </Button>
                 </Tooltip>
-                <Tooltip title="Eliminar">
-                  <Button onClick={() => setIdCurrent(row.id)}>
-                    <DeleteIcon color="error" />
-                  </Button>
-                </Tooltip>
+                {row.active ? (
+                  <Tooltip title="Eliminar">
+                    <Button onClick={() => setIdCurrent(row.id)}>
+                      <DeleteIcon color="error" />
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Activar">
+                    <Button onClick={() => setIdCurrent(row.id)}>
+                      <BeenhereIcon color="success" />
+                    </Button>
+                  </Tooltip>
+                )}
               </ButtonGroup>
             </StyledTableCell>
           </StyledTableRow>

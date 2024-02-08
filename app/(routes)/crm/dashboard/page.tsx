@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-import ListEventsToday from "@components/crm/dashboard/ListEventsToday";
+import TabsEvents from "@components/crm/dashboard/TabsEvents";
 import prisma from "@config/database";
 import { Event } from "@interfaces";
 
@@ -25,7 +25,7 @@ export default async function DashboardPage() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={8} lg={9}>
+      <Grid item xs={12} md={6} lg={4}>
         <Paper
           sx={{
             p: 2,
@@ -33,7 +33,7 @@ export default async function DashboardPage() {
             flexDirection: "column",
           }}
         >
-          <ListEventsToday events={events as Event[]} />
+          <TabsEvents events={events as Event[]} />
         </Paper>
       </Grid>
       <Grid item xs={12} md={4} lg={3}>

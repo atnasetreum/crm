@@ -1,3 +1,5 @@
+import { useRouter } from "next/navigation";
+
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -5,8 +7,9 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import ListItemButton from "@mui/material/ListItemButton";
 
-import { stringToDate } from "@shared/utils";
+import { stringToDateWithTime } from "@shared/utils";
 import { Event } from "@interfaces";
 
 interface Props {
@@ -14,13 +17,20 @@ interface Props {
 }
 
 export default function ListEventsToday({ events }: Props) {
+  const { replace } = useRouter();
+
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       {events
         .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
         .map((event) => {
           return (
-            <div key={event.id}>
+            <ListItemButton
+              key={event.id}
+              onClick={() =>
+                replace(`/crm/clients?id=${event.client.id}&edit=1`)
+              }
+            >
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar
@@ -29,9 +39,7 @@ export default function ListEventsToday({ events }: Props) {
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${event.client.name} ${
-                    event.comment ? `— ${event.comment}` : ""
-                  } `}
+                  primary={`${event.client.name} - ${event.project.name}`}
                   secondary={
                     <>
                       <Typography
@@ -40,15 +48,17 @@ export default function ListEventsToday({ events }: Props) {
                         variant="body2"
                         color="text.primary"
                       >
-                        {event.project.name}
+                        {event.comment}
                       </Typography>
-                      {` — ${stringToDate(event.date)}`}
+                      {` ${event.comment ? "—" : ""} ${stringToDateWithTime(
+                        event.date
+                      )}`}
                     </>
                   }
                 />
               </ListItem>
               <Divider variant="inset" component="li" />
-            </div>
+            </ListItemButton>
           );
         })}
     </List>
