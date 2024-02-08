@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -22,11 +22,12 @@ import { SelectChangeEvent } from "@mui/material";
 
 import { OptionType } from "@shared/components/AutocompleteCampaignType";
 import { SelectCampaignType } from "@shared/components/SelectCampaignType";
+import { SelectStatus } from "@shared/components";
 import { SelectProjects } from "@shared/components/SelectProjects";
 import { SelectOrigins } from "@shared/components/SelectOrigins";
 import { findOneClient, refreshClients } from "@actions";
-import FormClients from "./FormClients";
 import { Client } from "@interfaces";
+import FormClients from "./FormClients";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -102,15 +103,13 @@ export default function FiltersClients({ campaignTypes }: Props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleSearch = useDebouncedCallback((term: string) => {
+  const handleSearch = useDebouncedCallback((term: string, key: string) => {
     const params = new URLSearchParams(searchParams);
-
     if (term) {
-      params.set("query", term);
+      params.set(key, term);
     } else {
-      params.delete("query");
+      params.delete(key);
     }
-
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
@@ -190,6 +189,9 @@ export default function FiltersClients({ campaignTypes }: Props) {
     }
   }, [searchParams]);
 
+  const getCurrentValueFilter = (key: string) =>
+    searchParams.get(key)?.toString() || "";
+
   return (
     <>
       <FormClients
@@ -225,53 +227,46 @@ export default function FiltersClients({ campaignTypes }: Props) {
                   <StyledInputBase
                     placeholder="Buscar…"
                     inputProps={{ "aria-label": "search" }}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    defaultValue={searchParams.get("query")?.toString()}
+                    defaultValue={getCurrentValueFilter("query")}
+                    onChange={(
+                      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                    ) => handleSearch(e.target.value, "query")}
                   />
                 </Search>
               </Grid>
               <Grid item xs={12} md={4} lg={2}>
+                <SelectStatus
+                  isFilter={true}
+                  value={getCurrentValueFilter("status")}
+                  onChange={(e: SelectChangeEvent) =>
+                    handleSearch(e.target.value, "status")
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} md={4} lg={2}>
                 <SelectProjects
-                  value={searchParams.get("project")?.toString() || ""}
-                  onChange={(event: SelectChangeEvent) => {
-                    const params = new URLSearchParams(searchParams);
-                    if (event.target.value) {
-                      params.set("project", event.target.value);
-                    } else {
-                      params.delete("project");
-                    }
-                    replace(`${pathname}?${params.toString()}`);
-                  }}
+                  value={getCurrentValueFilter("project")}
+                  onChange={(e: SelectChangeEvent) =>
+                    handleSearch(e.target.value, "project")
+                  }
                 />
               </Grid>
               <Grid item xs={12} md={4} lg={2}>
                 <SelectOrigins
                   isFilter={true}
-                  value={searchParams.get("origin")?.toString() || ""}
-                  onChange={(e) => {
-                    const params = new URLSearchParams(searchParams);
-                    if (e.target.value) {
-                      params.set("origin", e.target.value);
-                    } else {
-                      params.delete("origin");
-                    }
-                    replace(`${pathname}?${params.toString()}`);
-                  }}
+                  value={getCurrentValueFilter("origin")}
+                  onChange={(e: SelectChangeEvent) =>
+                    handleSearch(e.target.value, "origin")
+                  }
                 />
               </Grid>
               <Grid item xs={12} md={4} lg={2}>
                 <SelectCampaignType
                   options={campaignTypes.map((item) => item.title)}
-                  value={searchParams.get("campaignType")?.toString() || ""}
-                  onChange={(event: SelectChangeEvent) => {
-                    const params = new URLSearchParams(searchParams);
-                    if (event.target.value) {
-                      params.set("campaignType", event.target.value);
-                    } else {
-                      params.delete("campaignType");
-                    }
-                    replace(`${pathname}?${params.toString()}`);
-                  }}
+                  value={getCurrentValueFilter("campaignType")}
+                  onChange={(e: SelectChangeEvent) =>
+                    handleSearch(e.target.value, "campaignType")
+                  }
                 />
               </Grid>
             </Grid>

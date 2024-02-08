@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "sonner";
 
-import { removeProject } from "@actions";
+import { removeClient, removeProject } from "@actions";
 
 interface Props {
   idCurrent: number;
@@ -22,7 +22,7 @@ export default function DialogConfirmClients({
   const remove = async () => {
     setIsLoading(true);
 
-    const resp = await removeProject(idCurrent).finally(() =>
+    const resp = await removeClient(idCurrent).finally(() =>
       setIsLoading(false)
     );
 

@@ -107,10 +107,8 @@ export default function TableClients({ rows }: Props) {
                   <Button
                     onClick={() => {
                       const params = new URLSearchParams(searchParams);
-
                       params.set("id", row.id.toString());
                       params.set("edit", "0");
-
                       replace(`${pathname}?${params.toString()}`);
                     }}
                   >

@@ -20,9 +20,15 @@ interface Props {
   value: string;
   onChange: (event: SelectChangeEvent) => void;
   disabled?: boolean;
+  isFilter?: boolean;
 }
 
-export function SelectStatus({ value, onChange, disabled = false }: Props) {
+export function SelectStatus({
+  value,
+  onChange,
+  disabled = false,
+  isFilter = false,
+}: Props) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -35,6 +41,7 @@ export function SelectStatus({ value, onChange, disabled = false }: Props) {
           onChange={onChange}
           disabled={disabled}
         >
+          {isFilter && <MenuItem value="">Ninguno</MenuItem>}
           {options.map((option) => (
             <MenuItem key={option} value={option}>
               {option}

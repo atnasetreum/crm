@@ -11,10 +11,11 @@ interface SearchParamsProps {
   campaignType: string;
   project: string;
   origin: string;
+  status: string;
 }
 
 const loadData = async (searchParams: SearchParamsProps) => {
-  const { query, campaignType, project, origin } = searchParams;
+  const { query, campaignType, project, origin, status } = searchParams;
 
   const clients = await prisma.client.findMany({
     where: {
@@ -38,6 +39,9 @@ const loadData = async (searchParams: SearchParamsProps) => {
       }),
       ...(origin && {
         origin: origin,
+      }),
+      ...(status && {
+        status: status,
       }),
     },
     include: {
