@@ -7,7 +7,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "sonner";
 
 import { findOneClient, removeClient } from "@actions";
-import { Client } from "@interfaces";
 
 interface Props {
   idCurrent: number;
