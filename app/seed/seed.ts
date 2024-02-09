@@ -27,6 +27,11 @@ export const initialData: SeedData = {
       name: "Mario Alberto Gutiérrez García",
       password: bcryptjs.hashSync("Mario1978"),
     },
+    {
+      email: "paulina.ator@gmail.com",
+      name: "Paulina Tornel",
+      password: bcryptjs.hashSync("18Juni086"),
+    },
   ],
   projects: [
     {
