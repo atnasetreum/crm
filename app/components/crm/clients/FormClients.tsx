@@ -104,7 +104,7 @@ export default function FormClients({
         }))
       );
     }
-  }, [clientCurrent]);
+  }, [clientCurrent, stateForm]);
 
   const closeDialog = () => {
     handleClose();
