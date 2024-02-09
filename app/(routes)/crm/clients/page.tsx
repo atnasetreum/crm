@@ -56,7 +56,11 @@ const loadData = async (searchParams: SearchParamsProps) => {
           createdBy: true,
         },
       },
-      events: true,
+      events: {
+        include: {
+          createdBy: true,
+        },
+      },
       createdBy: true,
       updatedBy: true,
     },
@@ -96,6 +100,7 @@ export default async function ClientsPage({
               title: item.campaignType,
             })) as OptionType[]
           }
+          clients={clients as Client[]}
         />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>

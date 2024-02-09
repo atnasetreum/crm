@@ -22,6 +22,8 @@ import { SelectChangeEvent } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Tooltip from "@mui/material/Tooltip";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
+import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
+import * as XLSX from "xlsx";
 
 import { OptionType } from "@shared/components/AutocompleteCampaignType";
 import { SelectCampaignType } from "@shared/components/SelectCampaignType";
@@ -31,6 +33,7 @@ import { SelectOrigins } from "@shared/components/SelectOrigins";
 import { findOneClient, refreshClients } from "@actions";
 import { Client } from "@interfaces";
 import FormClients from "./FormClients";
+import { stringToDateWithTime } from "@app/shared/utils";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -78,9 +81,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 interface Props {
   campaignTypes: OptionType[];
+  clients: Client[];
 }
 
-export default function FiltersClients({ campaignTypes }: Props) {
+export default function FiltersClients({ campaignTypes, clients }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
@@ -182,6 +186,46 @@ export default function FiltersClients({ campaignTypes }: Props) {
     }
   };
 
+  const createExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(
+      clients.map((client) => {
+        return {
+          Nombre: client.name,
+          Telefonos: client.phone,
+          ["Correos"]: client.email,
+          Estatus: client.status,
+          Proyectos: client.projects.map((project) => project.name).join("| "),
+          Origen: client.origin,
+          Campaña: client.campaignType,
+          creadoPor: client.createdBy.name,
+          Comentarios: client.comments
+            .map(
+              (comment) =>
+                `${comment.createdBy.name}: ${
+                  comment.comment
+                }: ${stringToDateWithTime(comment.createdAt)}`
+            )
+            .join("| "),
+          Eventos: client.events
+            .map(
+              (event) =>
+                `${stringToDateWithTime(event.date)}: ${event.comment}: ${
+                  event.type
+                }: ${event.createdBy.name}`
+            )
+            .join("| "),
+        };
+      })
+    );
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Clientes");
+    XLSX.writeFile(wb, "clientes.xlsx");
+  };
+
+  const getCurrentValueFilter = (key: string) =>
+    searchParams.get(key)?.toString() || "";
+
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
@@ -191,9 +235,6 @@ export default function FiltersClients({ campaignTypes }: Props) {
       findOne(id);
     }
   }, [searchParams]);
-
-  const getCurrentValueFilter = (key: string) =>
-    searchParams.get(key)?.toString() || "";
 
   return (
     <>
@@ -292,6 +333,15 @@ export default function FiltersClients({ campaignTypes }: Props) {
                         )
                       }
                     />
+                  </Tooltip>
+                  <Tooltip title="Descargar clientes">
+                    <IconButton
+                      aria-label="delete"
+                      color="primary"
+                      onClick={() => createExcel()}
+                    >
+                      <SimCardDownloadIcon />
+                    </IconButton>
                   </Tooltip>
                 </Box>
               </Grid>
