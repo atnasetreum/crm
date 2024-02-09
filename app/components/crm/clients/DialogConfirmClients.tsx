@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import LoadingButton from "@mui/lab/LoadingButton";
 import Dialog from "@mui/material/Dialog";
@@ -40,7 +40,7 @@ export default function DialogConfirmClients({
     handleClose();
   };
 
-  const getDataClient = useCallback(async () => {
+  const getDataClient = async () => {
     if (!idCurrent) {
       return;
     }
@@ -52,11 +52,11 @@ export default function DialogConfirmClients({
     }
 
     setIsActive(resp.client!.active);
-  }, [idCurrent]);
+  };
 
   useEffect(() => {
     getDataClient();
-  }, [idCurrent, getDataClient]);
+  }, [idCurrent]);
 
   return (
     <Dialog
