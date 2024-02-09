@@ -16,6 +16,7 @@ const options = [
   "Tipo de crédito",
   "Ubicación en Querétaro",
   "Ubicación estado",
+  "Ya compró",
 ];
 
 interface Props {
