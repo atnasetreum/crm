@@ -25,3 +25,5 @@ export const infoUpdate = (
   }
      ${name}`;
 };
+
+export const nowDateWithTime = () => moment().format("DD/MM/YYYY h:mm a");

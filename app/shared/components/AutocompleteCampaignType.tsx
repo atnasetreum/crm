@@ -49,7 +49,7 @@ export default function AutocompleteCampaignType({
         if (inputValue !== "" && !isExisting) {
           filtered.push({
             inputValue,
-            title: `Add "${inputValue}"`,
+            title: `Agregar "${inputValue}"`,
           });
         }
 

@@ -16,7 +16,7 @@ interface Props {
   events: Event[];
 }
 
-export default function ListEventsToday({ events }: Props) {
+export function ListEventsToday({ events }: Props) {
   const { replace } = useRouter();
 
   return (

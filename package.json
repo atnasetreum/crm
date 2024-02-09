@@ -26,6 +26,8 @@
     "@prisma/client": "^5.8.0",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.10",
+    "highcharts": "^11.3.0",
+    "highcharts-react-official": "^3.2.1",
     "moment": "^2.30.1",
     "next": "14.0.4",
     "next-auth": "^5.0.0-beta.4",

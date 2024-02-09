@@ -1,9 +1,9 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-import TabsEvents from "@components/crm/dashboard/TabsEvents";
-import prisma from "@config/database";
+import { ClientsByProject, TabsEvents } from "@components/crm/dashboard";
 import { Event } from "@interfaces";
+import prisma from "@config/database";
 
 const loadEvents = async () =>
   prisma.event.findMany({
@@ -20,8 +20,36 @@ const loadEvents = async () =>
     },
   });
 
+const clientsByProjects = async () => {
+  const data = await prisma.project.findMany({
+    where: {
+      clients: {
+        some: {},
+      },
+    },
+    include: {
+      clients: true,
+    },
+  });
+
+  const clientesTotales = data.reduce(
+    (acc, project) => acc + project.clients.length,
+    0
+  );
+
+  return data.map((project) => {
+    var porcentaje = Number((project.clients.length / clientesTotales) * 100);
+
+    return {
+      name: `${project.name} (${project.clients.length})`,
+      y: Number(porcentaje.toFixed(2)),
+    };
+  });
+};
 export default async function DashboardPage() {
   const events = await loadEvents();
+
+  const clientsByProjectsData = await clientsByProjects();
 
   return (
     <Grid container spacing={3}>
@@ -31,19 +59,22 @@ export default async function DashboardPage() {
             p: 2,
             display: "flex",
             flexDirection: "column",
+            height: "100%",
           }}
         >
           <TabsEvents events={events as Event[]} />
         </Paper>
       </Grid>
-      <Grid item xs={12} md={4} lg={3}>
+      <Grid item xs={12} md={6} lg={4}>
         <Paper
           sx={{
             p: 2,
             display: "flex",
             flexDirection: "column",
           }}
-        ></Paper>
+        >
+          <ClientsByProject data={clientsByProjectsData} />
+        </Paper>
       </Grid>
       <Grid item xs={12}>
         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}></Paper>

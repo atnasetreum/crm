@@ -1,6 +1,6 @@
 "use client";
 
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 import { Event } from "@interfaces";
-import ListEventsToday from "./ListEventsToday";
+import { ListEventsToday } from "./";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -51,9 +51,10 @@ interface Props {
   events: Event[];
 }
 
-export default function TabsEvents({ events }: Props) {
+export function TabsEvents({ events }: Props) {
   const theme = useTheme();
   const [value, setValue] = useState(0);
+  const [isClient, setIsClient] = useState(false);
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -62,6 +63,10 @@ export default function TabsEvents({ events }: Props) {
   const handleChangeIndex = (index: number) => {
     setValue(index);
   };
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
@@ -84,14 +89,18 @@ export default function TabsEvents({ events }: Props) {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <ListEventsToday
-            events={events.filter(({ type }) => type === "Llamada")}
-          />
+          {isClient && (
+            <ListEventsToday
+              events={events.filter(({ type }) => type === "Llamada")}
+            />
+          )}
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <ListEventsToday
-            events={events.filter(({ type }) => type === "Cita")}
-          />
+          {isClient && (
+            <ListEventsToday
+              events={events.filter(({ type }) => type === "Cita")}
+            />
+          )}
         </TabPanel>
       </SwipeableViews>
     </Box>
