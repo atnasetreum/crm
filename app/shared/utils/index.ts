@@ -27,3 +27,17 @@ export const infoUpdate = (
 };
 
 export const nowDateWithTime = () => moment().format("DD/MM/YYYY h:mm a");
+
+export const groupBy = (
+  items: {
+    [key: string]: any;
+  }[],
+  key: string
+) =>
+  items.reduce(
+    (result, item) => ({
+      ...result,
+      [item[key]]: [...(result[item[key]] || []), item],
+    }),
+    {}
+  );

@@ -7,15 +7,13 @@ import { optionsChartDefault } from "@shared/libs";
 
 require("highcharts/modules/exporting")(Highcharts);
 
-export interface ClientsByProjectsData {
-  name: string;
-  y: number;
-  sliced?: boolean;
-  selected?: boolean;
-}
-
 interface Props {
-  data: ClientsByProjectsData[];
+  data: {
+    name: string;
+    y: number;
+    sliced?: boolean;
+    selected?: boolean;
+  }[];
 }
 
 export const ClientsByProject = ({ data }: Props) => {
