@@ -40,7 +40,7 @@ export default function PopoverComments({ clientCurrent }: Props) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <FeedbackIcon color="primary" />
+            <FeedbackIcon color="success" />
           </IconButton>
         </Tooltip>
       </Box>

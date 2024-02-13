@@ -86,7 +86,7 @@ export default function TableClients({ rows }: Props) {
             <StyledTableCell>{row.email}</StyledTableCell>
             <StyledTableCell>
               {row.status}{" "}
-              {row.reasonRejection ? `(${row.reasonRejection})` : ""}
+              {row.status === "Descartado" ? `(${row.reasonRejection})` : ""}
             </StyledTableCell>
             <StyledTableCell>
               {row.projects.map((project) => project.name).join(", ")}
