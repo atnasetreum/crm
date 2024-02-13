@@ -4,32 +4,43 @@ function registerServiceWorker() {
       navigator.serviceWorker.register("/sw.js").then((registration) => {
         console.log("Service Worker registration successful:", registration);
 
-        fetch("/api/vapid-keys", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then(function (response) {
-            return response.text();
-          })
-          .then(function (text) {
-            const { publicKey } = JSON.parse(text);
-            console.log({ publicKey });
-            /*const vapidKeys = JSON.parse(text);
-            registration.pushManager
-              .subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: vapidKeys.publicKey,
-              })
-              .then(function (subscription) {
-                console.log("User is subscribed:", subscription);
-              });*/
-          });
+        if (Notification.permission === "default") {
+          Notification.requestPermission(function (status) {
+            console.log("Notification permission status:", status);
+            if (status === "granted") {
+              // registration.showNotification("Notificación de prueba");
 
-        Notification.requestPermission(function (status) {
-          console.log("Notification permission status:", status);
-        });
+              fetch("/api/vapid-keys", {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then(function (response) {
+                  return response.text();
+                })
+                .then(function (text) {
+                  const { publicKey } = JSON.parse(text);
+                  const vapidKeys = publicKey;
+                  registration.pushManager
+                    .subscribe({
+                      userVisibleOnly: true,
+                      applicationServerKey: vapidKeys.publicKey,
+                    })
+                    .then(function (subscription) {
+                      console.log("User is subscribed:", subscription);
+                      fetch("/api/vapid-keys", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(subscription),
+                      });
+                    });
+                });
+            }
+          });
+        }
       });
     } else {
       console.error("Service Worker registration failed.");

@@ -10,26 +10,45 @@ datasource db {
 
 
 model User {
-  id                 Int         @id @default(autoincrement())
-  email              String      @unique
-  name               String
-  password           String
-  subscription       String      @default("")
-  active             Boolean     @default(true)
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  id                      Int                   @id @default(autoincrement())
+  email                   String                @unique
+  name                    String
+  password                String
+  active                  Boolean               @default(true)
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
 
-  userCreatorClient  Client[]    @relation("user_creator_client")
-  userUpdaterClient  Client[]    @relation("user_updater_client")
+  userCreatorClient        Client[]             @relation("user_creator_client")
+  userUpdaterClient        Client[]             @relation("user_updater_client")
 
-  userCreatorProject Project[]   @relation("user_creator_project")
-  userUpdaterProject Project[]   @relation("user_updater_project")
+  userCreatorProject       Project[]            @relation("user_creator_project")
+  userUpdaterProject       Project[]            @relation("user_updater_project")
 
-  userCreatorComment Comment[]   @relation("user_creator_comment")
-  userUpdaterComment Comment[]   @relation("user_updater_comment")
+  userCreatorComment       Comment[]            @relation("user_creator_comment")
+  userUpdaterComment       Comment[]            @relation("user_updater_comment")
 
-  userCreatorEvent   Event[]     @relation("user_creator_event")
-  userUpdaterEvent   Event[]     @relation("user_updater_event")
+  userCreatorEvent         Event[]              @relation("user_creator_event")
+  userUpdaterEvent         Event[]              @relation("user_updater_event")
+
+  userCreatorSubscription  Subscription[] @relation("user_creator_subscription")
+  userUpdaterSubscription  Subscription[] @relation("user_updater_subscription")
+
+  subscriptions            Subscription[]
+}
+
+model Subscription {
+  id              Int      @id @default(autoincrement())
+  subscription    String
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  createdById     Int
+  createdBy       User     @relation(fields: [createdById], references: [id], name: "user_creator_subscription")
+  updatedAt       DateTime @updatedAt
+  updatedById     Int?
+  updatedBy       User?    @relation(fields: [updatedById], references: [id], name: "user_updater_subscription")
+
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
 }
 
 
@@ -82,8 +101,8 @@ model Comment {
   updatedById Int?
   updatedBy   User?      @relation(fields: [updatedById], references: [id], name: "user_updater_comment")
 
-  client      Client     @relation(fields: [clientId], references: [id])
   clientId    Int
+  client      Client     @relation(fields: [clientId], references: [id])
 }
 
 model Event {

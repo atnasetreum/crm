@@ -1,4 +1,4 @@
-import { Project } from "@interfaces";
+import { Project, Subscription } from "@interfaces";
 
 export interface User {
   id: number;
@@ -6,7 +6,6 @@ export interface User {
   email: string;
   password: string;
   role: string;
-  subscription?: string;
   active: boolean;
   createdAt: Date;
   createdById: number;
@@ -15,4 +14,5 @@ export interface User {
   updatedById: number | null;
   updatedBy: User | null;
   projects: Project[];
+  subscriptions: Subscription[];
 }

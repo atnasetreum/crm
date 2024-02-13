@@ -55,6 +55,8 @@ export function TabsEvents({ events }: Props) {
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const [calls, setCalls] = useState<Event[]>([]);
+  const [eventsCurrent, setEventsCurrent] = useState<Event[]>([]);
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -65,8 +67,23 @@ export function TabsEvents({ events }: Props) {
   };
 
   useEffect(() => {
+    setCalls(events.filter(({ type }) => type === "Llamada"));
+    setEventsCurrent(events.filter(({ type }) => type === "Cita"));
+  }, [events]);
+
+  useEffect(() => {
     setIsClient(true);
   }, []);
+
+  /*useEffect(() => {
+    fetch("/api/push", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hola: "mundo" }),
+    });
+  }, []);*/
 
   return (
     <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
@@ -79,8 +96,8 @@ export function TabsEvents({ events }: Props) {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Llamadas" {...a11yProps(0)} />
-          <Tab label="Citas" {...a11yProps(1)} />
+          <Tab label={`Llamadas (${calls.length})`} {...a11yProps(0)} />
+          <Tab label={`Citas (${eventsCurrent.length})`} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -89,18 +106,10 @@ export function TabsEvents({ events }: Props) {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          {isClient && (
-            <ListEventsToday
-              events={events.filter(({ type }) => type === "Llamada")}
-            />
-          )}
+          {isClient && <ListEventsToday events={calls} />}
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {isClient && (
-            <ListEventsToday
-              events={events.filter(({ type }) => type === "Cita")}
-            />
-          )}
+          {isClient && <ListEventsToday events={eventsCurrent} />}
         </TabPanel>
       </SwipeableViews>
     </Box>
