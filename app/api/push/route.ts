@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import * as webpush from "web-push";
-//import webpush from "web-push";
 
-import * as vapidKeys from "@config/vapid-keys.json";
+import { vapidKeys } from "@config/vapid-keys";
 import { auth } from "@app/auth.config";
 import prisma from "@config/database";
 
