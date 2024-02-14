@@ -13,3 +13,5 @@ export * from "./client/remove";
 export * from "./client/refresh";
 
 export * from "./events/findNextEvent";
+
+export * from "./push/notify";

@@ -46,16 +46,10 @@ self.addEventListener("push", (event) => {
   const iconAppointment = "/imgs/icon-appointment.png";
 
   if (event.data) {
-    const payload = JSON.parse(event.data.text());
+    const payload = JSON.parse(event.data.text() || {});
 
-    const { date, eventClient, name } = payload;
-
-    if (eventClient) {
-      const {
-        project: { name: projectName },
-        type,
-        comment,
-      } = eventClient;
+    if (Object.keys(payload)) {
+      const { date, projectName, name, type, comment } = payload;
 
       const imageCall = "/imgs/banner-call.jpg";
       const imageAppointment = "/imgs/banner-appointment.png";
@@ -90,11 +84,16 @@ self.addEventListener("push", (event) => {
 
       const options = {
         ...optionsDefault,
-        body: `${type} - ${date} ${comment ? `(${comment})` : ""}`,
+        body:
+          projectName +
+          "\n" +
+          date +
+          "\n" +
+          (comment ? `Nota: ${comment}` : ""),
       };
 
       event.waitUntil(
-        self.registration.showNotification(`${name} (${projectName})`, options)
+        self.registration.showNotification(`${type} - ${name}`, options)
       );
     }
   }
@@ -111,10 +110,11 @@ self.addEventListener("notificationclick", (event) => {
     return notification.close();
   }
 
-  const { id } = payload;
+  const { clientId } = payload;
 
   const response = clients.matchAll({ type: "window" }).then((clientsArr) => {
-    const params = action === "call-action" ? `call=${id}` : `id=${id}&edit=1`;
+    const params =
+      action === "call-action" ? `call=${clientId}` : `id=${clientId}&edit=1`;
 
     const isLocalhost = self.location.hostname === "localhost";
 

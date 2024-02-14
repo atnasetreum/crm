@@ -159,9 +159,12 @@ export default function TableClients({ rows }: Props) {
                               "Content-Type": "application/json",
                             },
                             body: JSON.stringify({
-                              ...row,
+                              clientId: row.id,
+                              name: row.name,
+                              projectName: row.events[0].project.name,
+                              type: row.events[0].type,
+                              comment: row.events[0].comment,
                               date: stringToDateWithTime(row.events[0].date),
-                              eventClient: row.events[0],
                             }),
                           });
                         }}

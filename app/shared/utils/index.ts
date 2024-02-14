@@ -41,3 +41,13 @@ export const groupBy = (
     }),
     {}
   );
+
+export const diffDateWithNow = (date: Date) => {
+  const now = moment();
+  const then = moment(date);
+  const duration = moment.duration(now.diff(then));
+  duration.humanize();
+};
+
+export const diffInMinutesFuture = (date: Date) =>
+  moment(date).diff(moment(), "minutes");

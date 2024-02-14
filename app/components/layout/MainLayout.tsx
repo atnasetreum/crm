@@ -83,7 +83,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   };
 
   const getNextEvent = async () => {
-    await findNextEvent();
+    // await findNextEvent();
   };
 
   useEffect(() => {
