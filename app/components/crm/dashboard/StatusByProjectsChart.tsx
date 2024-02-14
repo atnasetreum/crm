@@ -5,8 +5,10 @@ import HighchartsReact from "highcharts-react-official";
 
 import { optionsChartDefault } from "@shared/libs";
 
-require("highcharts/modules/exporting")(Highcharts);
-require("highcharts/modules/drilldown")(Highcharts);
+if (typeof Highcharts === "object") {
+  require("highcharts/modules/exporting")(Highcharts);
+  require("highcharts/modules/drilldown")(Highcharts);
+}
 
 interface Props {
   data: {
@@ -21,7 +23,7 @@ interface Props {
   }[];
 }
 
-export const StatusByProjects = ({ data, series }: Props) => {
+export const StatusByProjectsChart = ({ data, series }: Props) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}

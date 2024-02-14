@@ -1,4 +1,4 @@
 export * from "./ListEventsToday";
 export * from "./TabsEvents";
-export * from "./ClientsByProject";
-export * from "./StatusByProjects";
+export * from "./ClientsByProjectChart";
+export * from "./StatusByProjectsChart";

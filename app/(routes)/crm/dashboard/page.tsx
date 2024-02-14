@@ -2,8 +2,8 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
 import {
-  ClientsByProject,
-  StatusByProjects,
+  ClientsByProjectChart,
+  StatusByProjectsChart,
   TabsEvents,
 } from "@components/crm/dashboard";
 import { Event } from "@interfaces";
@@ -142,7 +142,7 @@ export default async function DashboardPage() {
             flexDirection: "column",
           }}
         >
-          <ClientsByProject data={clientsByProjectsData} />
+          <ClientsByProjectChart data={clientsByProjectsData} />
         </Paper>
       </Grid>
       <Grid item xs={12} md={6} lg={4}>
@@ -153,7 +153,7 @@ export default async function DashboardPage() {
             flexDirection: "column",
           }}
         >
-          <StatusByProjects
+          <StatusByProjectsChart
             data={statusByProjectsData}
             series={statusByProjectsSeries}
           />

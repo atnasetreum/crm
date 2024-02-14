@@ -5,7 +5,9 @@ import HighchartsReact from "highcharts-react-official";
 
 import { optionsChartDefault } from "@shared/libs";
 
-require("highcharts/modules/exporting")(Highcharts);
+if (typeof Highcharts === "object") {
+  require("highcharts/modules/exporting")(Highcharts);
+}
 
 interface Props {
   data: {
@@ -16,7 +18,7 @@ interface Props {
   }[];
 }
 
-export const ClientsByProject = ({ data }: Props) => {
+export const ClientsByProjectChart = ({ data }: Props) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}
