@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+//import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import * as webpush from "web-push";
 
@@ -16,8 +17,9 @@ type ResponseData = {
   message: string;
 };
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
+export async function POST() {
+  //export async function POST(request: NextRequest) {
+  //const body = await request.json();
 
   const session = await auth();
 
@@ -48,8 +50,18 @@ export async function POST(request: NextRequest) {
 
     for (let i2 = 0, t2 = subscriptions.length; i2 < t2; i2++) {
       const data = subscriptions[i2];
+
       const subscription = JSON.parse(data.subscription);
-      await webpush.sendNotification(subscription, JSON.stringify(body));
+
+      webpush.sendNotification(subscription, "hola").catch(async (error) => {
+        if (error.statusCode === 410) {
+          await prisma.subscription.delete({
+            where: {
+              id: data.id,
+            },
+          });
+        }
+      });
     }
   }
 

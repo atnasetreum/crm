@@ -75,16 +75,6 @@ export function TabsEvents({ events }: Props) {
     setIsClient(true);
   }, []);
 
-  /*useEffect(() => {
-    fetch("/api/push", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ hola: "mundo" }),
-    });
-  }, []);*/
-
   return (
     <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
       <AppBar position="static">

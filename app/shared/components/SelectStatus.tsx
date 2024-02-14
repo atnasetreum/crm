@@ -7,7 +7,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 const options = [
   "Apartado",
   "Cita",
-  // "Cliente descartado",
+  "Cliente descartado",
   "Contactado",
   "Descartado",
   "Interesado",
