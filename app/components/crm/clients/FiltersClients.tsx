@@ -230,7 +230,11 @@ export default function FiltersClients({ campaignTypes, clients }: Props) {
     const { client } = await findOneClient(id);
     if (client && client.phone) {
       const firstPhone = `${client.phone.split(",")[0]}`.trim();
-      window.open(`tel:${firstPhone}`);
+      const link = document.createElement("a");
+      link.href = `tel:${firstPhone}`;
+      link.click();
+      link.remove();
+      //window.open(`tel:${firstPhone}`);
     }
   };
 
