@@ -24,7 +24,9 @@ export function ListEventsToday({ events }: Props) {
     <Paper style={{ maxHeight: 300, overflow: "auto" }}>
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {events
-          .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+          .sort(
+            (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
+          )
           .map((event) => {
             return (
               <ListItemButton

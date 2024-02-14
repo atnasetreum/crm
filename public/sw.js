@@ -41,13 +41,9 @@ self.addEventListener("push", (event) => {
   const icon =
     "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/notification-circle-blue-512.png";
 
-  const image = "https://jayblues.com/images/crm-banner.jpg";
+  const iconCall = "/imgs/icon-call.png";
 
-  const iconCall =
-    "https://assets.stickpng.com/images/5a452570546ddca7e1fcbc7d.png";
-
-  const iconAppointment =
-    "https://icons.veryicon.com/png/o/miscellaneous/cloud-keeper/client-7.png";
+  const iconAppointment = "/imgs/icon-appointment.png";
 
   if (event.data) {
     const payload = JSON.parse(event.data.text());
@@ -60,6 +56,9 @@ self.addEventListener("push", (event) => {
         type,
         comment,
       } = eventClient;
+
+      const imageCall = "/imgs/banner-call.jpg";
+      const imageAppointment = "/imgs/banner-appointment.png";
 
       const actions = [];
 
@@ -81,7 +80,7 @@ self.addEventListener("push", (event) => {
 
       const optionsDefault = {
         icon,
-        image,
+        image: type === "Llamada" ? imageCall : imageAppointment,
         badge: icon,
         dir: "auto",
         vibrate: [100, 50, 100],

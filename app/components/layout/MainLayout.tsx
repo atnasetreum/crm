@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
 
@@ -22,6 +22,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import { MainListItems, SecondaryListItems } from "./MainMenu";
 import Copyright from "@components/layout/Copyright";
+import { findNextEvent } from "@actions";
 
 const drawerWidth: number = 240;
 
@@ -80,6 +81,14 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const getNextEvent = async () => {
+    await findNextEvent();
+  };
+
+  useEffect(() => {
+    getNextEvent();
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>

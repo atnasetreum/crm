@@ -234,7 +234,6 @@ export default function FiltersClients({ campaignTypes, clients }: Props) {
       link.href = `tel:${firstPhone}`;
       link.click();
       link.remove();
-      //window.open(`tel:${firstPhone}`);
     }
   };
 

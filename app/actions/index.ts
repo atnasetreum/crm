@@ -11,3 +11,5 @@ export * from "./client/save";
 export * from "./client/findOne";
 export * from "./client/remove";
 export * from "./client/refresh";
+
+export * from "./events/findNextEvent";
