@@ -40,7 +40,9 @@ export function TableDefault({
         <TableHead>
           <StyledTableRow>
             {headers.map((header) => (
-              <StyledTableCell key={header}>{header}</StyledTableCell>
+              <StyledTableCell key={header} align="center">
+                {header}
+              </StyledTableCell>
             ))}
           </StyledTableRow>
         </TableHead>

@@ -36,48 +36,68 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  console.log("Push notification received", event);
+  console.log("Push notification received");
 
   const icon =
     "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/notification-circle-blue-512.png";
 
-  const image =
-    "https://f.hubspotusercontent00.net/hubfs/5283157/30.%20%5BArticulo%5D%20CRM%20m%C3%B3vil%20%C2%BFcu%C3%A1les%20son%20sus%20ventajas/CRM%20Movil.jpg";
+  const image = "https://jayblues.com/images/crm-banner.jpg";
 
   const iconCall =
     "https://assets.stickpng.com/images/5a452570546ddca7e1fcbc7d.png";
 
-  if (event.data) {
-    const {
-      title,
-      event: eventData,
-      ...payload
-    } = JSON.parse(event.data.text());
+  const iconAppointment =
+    "https://icons.veryicon.com/png/o/miscellaneous/cloud-keeper/client-7.png";
 
-    const optionsDefault = {
-      icon,
-      image,
-      badge: icon,
-      dir: "auto",
-      vibrate: [100, 50, 100],
-      data: eventData,
-      actions: [
-        {
+  if (event.data) {
+    const payload = JSON.parse(event.data.text());
+
+    const { date, eventClient, name } = payload;
+
+    if (eventClient) {
+      const {
+        project: { name: projectName },
+        type,
+        comment,
+      } = eventClient;
+
+      const actions = [];
+
+      if (type === "Llamada") {
+        actions.push({
           action: "call-action",
           title: "Llamar",
           icon: iconCall,
-        },
-      ],
-    };
+        });
+      }
 
-    const options = {
-      ...optionsDefault,
-      ...payload,
-    };
+      if (type === "Cita") {
+        actions.push({
+          action: "appointment-action",
+          title: "Cita",
+          icon: iconAppointment,
+        });
+      }
 
-    console.log(options);
+      const optionsDefault = {
+        icon,
+        image,
+        badge: icon,
+        dir: "auto",
+        vibrate: [100, 50, 100],
+        data: payload,
+        actions,
+      };
 
-    event.waitUntil(self.registration.showNotification(title, options));
+      const options = {
+        ...optionsDefault,
+        body: `${type} - ${date} ${comment ? `(${comment})` : ""}`,
+      };
+
+      event.waitUntil(
+        self.registration.showNotification(`${name} (${projectName})`, options)
+      );
+    }
   }
 });
 
@@ -86,15 +106,40 @@ self.addEventListener("notificationclick", (event) => {
 
   const notification = event.notification;
   const action = event.action;
+  const payload = notification.data;
 
-  if (action === "call-action") {
-    console.log("Calling...");
-    // window.open("tel:+1800229933");
+  if (action === "") {
+    return notification.close();
   }
 
-  console.log({ notification, action });
+  const { id } = payload;
 
-  event.notification.close();
+  const response = clients.matchAll({ type: "window" }).then((clientsArr) => {
+    const params = action === "call-action" ? `call=true` : `id=${id}&edit=1`;
+
+    const isLocalhost = self.location.hostname === "localhost";
+
+    const domain = isLocalhost
+      ? "http://localhost:3000"
+      : "https://mariogutierrezcrm.com";
+
+    const url = `${domain}/crm/clients?${params}`;
+
+    const client = clientsArr.find((c) => c.visibilityState === "visible");
+
+    if (client !== undefined) {
+      client.navigate(url);
+      client.focus();
+    } else {
+      clients
+        .openWindow(url)
+        .then((windowClient) => (windowClient ? windowClient.focus() : null));
+    }
+
+    return notification.close();
+  });
+
+  event.waitUntil(response);
 });
 
 self.addEventListener("notificationclose", (event) => {

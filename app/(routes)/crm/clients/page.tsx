@@ -59,6 +59,7 @@ const loadData = async (searchParams: SearchParamsProps) => {
       events: {
         include: {
           createdBy: true,
+          project: true,
         },
       },
       createdBy: true,

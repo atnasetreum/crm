@@ -3,6 +3,7 @@
 import { ChangeEvent, MouseEvent, useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -11,13 +12,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import Tooltip from "@mui/material/Tooltip";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
+import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 
 import {
   StyledTableCell,
   StyledTableRow,
   TableDefault,
 } from "@shared/components";
-import { infoCreate, infoUpdate } from "@shared/utils";
+import { infoCreate, infoUpdate, stringToDateWithTime } from "@shared/utils";
 import DialogConfirmClients from "./DialogConfirmClients";
 import { Client } from "@interfaces";
 import PopoverComments from "./PopoverComments";
@@ -33,6 +35,8 @@ export default function TableClients({ rows }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+
+  const { data: session } = useSession();
 
   const handleChangePage = (
     _: MouseEvent<HTMLButtonElement> | null,
@@ -123,10 +127,8 @@ export default function TableClients({ rows }: Props) {
                   <Button
                     onClick={() => {
                       const params = new URLSearchParams(searchParams);
-
                       params.set("id", row.id.toString());
                       params.set("edit", "1");
-
                       replace(`${pathname}?${params.toString()}`);
                     }}
                   >
@@ -146,6 +148,28 @@ export default function TableClients({ rows }: Props) {
                     </Button>
                   </Tooltip>
                 )}
+                {session?.user.email === "eduardo-266@hotmail.com" &&
+                  row.events.length && (
+                    <Tooltip title="Notificar">
+                      <Button
+                        onClick={() => {
+                          fetch("/api/push", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                              ...row,
+                              date: stringToDateWithTime(row.events[0].date),
+                              eventClient: row.events[0],
+                            }),
+                          });
+                        }}
+                      >
+                        <SendToMobileIcon sx={{ cursor: "pointer" }} />
+                      </Button>
+                    </Tooltip>
+                  )}
               </ButtonGroup>
             </StyledTableCell>
           </StyledTableRow>

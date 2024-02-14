@@ -19,11 +19,9 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 
 import { MainListItems, SecondaryListItems } from "./MainMenu";
 import Copyright from "@components/layout/Copyright";
-import { DEVELOPMENT } from "@constants";
 
 const drawerWidth: number = 240;
 
@@ -113,28 +111,6 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           >
             {session?.user.name}
           </Typography>
-          {process.env.NODE_ENV === DEVELOPMENT && (
-            <SendToMobileIcon
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                fetch("/api/push", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    title: "Llamada (Valencia)",
-                    body: "Haide Segura - 23/02/2024 1:00 pm",
-                    event: {
-                      id: "1",
-                      type: "Llamada",
-                      start: "2024-02-23T13:00:00",
-                    },
-                  }),
-                });
-              }}
-            />
-          )}
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
