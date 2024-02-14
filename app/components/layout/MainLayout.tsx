@@ -22,7 +22,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import { MainListItems, SecondaryListItems } from "./MainMenu";
 import Copyright from "@components/layout/Copyright";
-import { findNextEvent } from "@actions";
+//import { findNextEvent } from "@actions";
 
 const drawerWidth: number = 240;
 
