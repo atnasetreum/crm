@@ -38,22 +38,62 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener("push", (event) => {
   console.log("Push notification received", event);
 
-  let data = { title: "New!", content: "Something new happened!" };
+  const icon =
+    "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/notification-circle-blue-512.png";
+
+  const image =
+    "https://f.hubspotusercontent00.net/hubfs/5283157/30.%20%5BArticulo%5D%20CRM%20m%C3%B3vil%20%C2%BFcu%C3%A1les%20son%20sus%20ventajas/CRM%20Movil.jpg";
+
+  const iconCall =
+    "https://assets.stickpng.com/images/5a452570546ddca7e1fcbc7d.png";
 
   if (event.data) {
-    //data = JSON.parse(event.data.text());
+    const {
+      title,
+      event: eventData,
+      ...payload
+    } = JSON.parse(event.data.text());
+
+    const optionsDefault = {
+      icon,
+      image,
+      badge: icon,
+      dir: "auto",
+      vibrate: [100, 50, 100],
+      data: eventData,
+      actions: [
+        {
+          action: "call-action",
+          title: "Llamar",
+          icon: iconCall,
+        },
+      ],
+    };
+
+    const options = {
+      ...optionsDefault,
+      ...payload,
+    };
+
+    console.log(options);
+
+    event.waitUntil(self.registration.showNotification(title, options));
   }
-
-  const options = {
-    //body: data.content,
-    body: "data.content",
-  };
-
-  event.waitUntil(self.registration.showNotification(data.title, options));
 });
 
 self.addEventListener("notificationclick", (event) => {
   console.log("Notification clicked");
+
+  const notification = event.notification;
+  const action = event.action;
+
+  if (action === "call-action") {
+    console.log("Calling...");
+    // window.open("tel:+1800229933");
+  }
+
+  console.log({ notification, action });
+
   event.notification.close();
 });
 

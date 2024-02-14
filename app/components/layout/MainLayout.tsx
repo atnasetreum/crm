@@ -122,7 +122,15 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({ hola: "mundo" }),
+                  body: JSON.stringify({
+                    title: "Llamada (Valencia)",
+                    body: "Haide Segura - 23/02/2024 1:00 pm",
+                    event: {
+                      id: "1",
+                      type: "Llamada",
+                      start: "2024-02-23T13:00:00",
+                    },
+                  }),
                 });
               }}
             />
