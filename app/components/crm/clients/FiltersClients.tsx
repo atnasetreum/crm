@@ -226,10 +226,23 @@ export default function FiltersClients({ campaignTypes, clients }: Props) {
   const getCurrentValueFilter = (key: string) =>
     searchParams.get(key)?.toString() || "";
 
+  const callClient = async (id: number) => {
+    const { client } = await findOneClient(id);
+    if (client && client.phone) {
+      const firstPhone = `${client.phone.split(",")[0]}`.trim();
+      window.open(`tel:${firstPhone}`);
+    }
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
     const id = Number(params.get("id") || 0);
+    const call = Number(params.get("call") || 0);
+
+    if (call) {
+      callClient(call);
+    }
 
     if (id) {
       findOne(id);

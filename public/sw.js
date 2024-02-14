@@ -115,7 +115,7 @@ self.addEventListener("notificationclick", (event) => {
   const { id } = payload;
 
   const response = clients.matchAll({ type: "window" }).then((clientsArr) => {
-    const params = action === "call-action" ? `call=true` : `id=${id}&edit=1`;
+    const params = action === "call-action" ? `call=${id}` : `id=${id}&edit=1`;
 
     const isLocalhost = self.location.hostname === "localhost";
 
