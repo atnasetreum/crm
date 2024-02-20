@@ -7,6 +7,7 @@ import { EventInput } from "@fullcalendar/core/index.js";
 import prisma from "@config/database";
 import { auth } from "@app/auth.config";
 import { ClientForm } from "@components/crm/clients/FormClients";
+import { Project } from "@prisma/client";
 
 interface Props extends ClientForm {
   id: number;
@@ -40,14 +41,14 @@ export const saveClient = async (clientCurrent: Props) => {
 
     let client;
 
-    const proyects = await prisma.project.findMany({
+    const proyects = (await prisma.project.findMany({
       where: {
         active: true,
         name: {
           in: clientCurrent.projects,
         },
       },
-    });
+    })) as Project[];
 
     if (clientCurrent.id) {
       client = await prisma.client.update({
