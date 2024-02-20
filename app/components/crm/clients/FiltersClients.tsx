@@ -220,7 +220,7 @@ export default function FiltersClients({ campaignTypes, clients }: Props) {
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Clientes");
-    XLSX.writeFile(wb, "clientes.xlsx");
+    //XLSX.writeFile(wb, "clientes.xlsx");
   };
 
   const getCurrentValueFilter = (key: string) =>

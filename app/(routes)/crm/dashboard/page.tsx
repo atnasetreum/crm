@@ -6,7 +6,7 @@ import {
   StatusByProjectsChart,
   TabsEvents,
 } from "@components/crm/dashboard";
-import { Event } from "@interfaces";
+import { Event, Project } from "@interfaces";
 import prisma from "@config/database";
 import { groupBy } from "@shared/utils";
 
@@ -26,7 +26,7 @@ const loadEvents = async () =>
   });
 
 const clientsByProjects = async () => {
-  const data = await prisma.project.findMany({
+  const data = (await prisma.project.findMany({
     where: {
       clients: {
         some: {},
@@ -35,7 +35,7 @@ const clientsByProjects = async () => {
     include: {
       clients: true,
     },
-  });
+  })) as Project[];
 
   const clientesTotales = data.reduce(
     (acc, project) => acc + project.clients.length,
@@ -53,7 +53,7 @@ const clientsByProjects = async () => {
 };
 
 const statusByProjects = async () => {
-  const projectWithClients = await prisma.project.findMany({
+  const projectWithClients = (await prisma.project.findMany({
     where: {
       clients: {
         some: {},
@@ -66,7 +66,7 @@ const statusByProjects = async () => {
     orderBy: {
       name: "asc",
     },
-  });
+  })) as Project[];
 
   const clientsTotales = projectWithClients.reduce(
     (acc, project) => acc + project.clients.length,

@@ -90,7 +90,9 @@ export default async function ClientsPage({
 }) {
   const clients = await loadData(searchParams);
 
-  const campaignTypes = await loadCampaignTypes();
+  const campaignTypes = (await loadCampaignTypes()) as {
+    campaignType: string;
+  }[];
 
   return (
     <Grid container spacing={3}>
