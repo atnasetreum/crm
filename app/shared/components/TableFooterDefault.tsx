@@ -15,6 +15,7 @@ interface Props {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   headers: string[];
+  count?: number;
 }
 
 export default function TableFooterDefault({
@@ -24,6 +25,7 @@ export default function TableFooterDefault({
   handleChangePage,
   handleChangeRowsPerPage,
   headers,
+  count,
 }: Props) {
   return (
     <TableFooter>
@@ -31,7 +33,7 @@ export default function TableFooterDefault({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
           colSpan={headers.length}
-          count={rows.length}
+          count={count ?? rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

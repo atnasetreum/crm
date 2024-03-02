@@ -14,41 +14,63 @@ interface SearchParamsProps {
   status: string;
   deletedUsers: string;
   discardedUsers: string;
+  page?: number;
+  limit?: number;
 }
 
 const loadData = async (searchParams: SearchParamsProps) => {
-  const { query, campaignType, project, origin, status, deletedUsers } =
-    searchParams;
+  const {
+    query,
+    campaignType,
+    project,
+    origin,
+    status,
+    deletedUsers,
+    page = 1,
+    limit = 5,
+  } = searchParams;
+
+  const where: any = {
+    ...(!deletedUsers && {
+      active: true,
+    }),
+    ...(query && {
+      OR: [
+        { name: { contains: query, mode: "insensitive" } },
+        { phone: { contains: query, mode: "insensitive" } },
+        { email: { contains: query, mode: "insensitive" } },
+      ],
+    }),
+    ...(campaignType && {
+      campaignType: campaignType,
+    }),
+    ...(project && {
+      projects: {
+        some: {
+          name: project,
+        },
+      },
+    }),
+    ...(origin && {
+      origin: origin,
+    }),
+    ...(status && {
+      status: status,
+    }),
+  };
+
+  const numRows = await prisma.client.count({
+    where,
+  });
+
+  const limitNumber = Number(limit);
+
+  const numPerPage = limitNumber;
+  const numPages = Math.ceil(numRows / numPerPage);
+  const skip = (Number(page) - 1) * numPerPage;
 
   const clients = await prisma.client.findMany({
-    where: {
-      ...(!deletedUsers && {
-        active: true,
-      }),
-      ...(query && {
-        OR: [
-          { name: { contains: query, mode: "insensitive" } },
-          { phone: { contains: query, mode: "insensitive" } },
-          { email: { contains: query, mode: "insensitive" } },
-        ],
-      }),
-      ...(campaignType && {
-        campaignType: campaignType,
-      }),
-      ...(project && {
-        projects: {
-          some: {
-            name: project,
-          },
-        },
-      }),
-      ...(origin && {
-        origin: origin,
-      }),
-      ...(status && {
-        status: status,
-      }),
-    },
+    where,
     include: {
       projects: true,
       comments: {
@@ -65,12 +87,14 @@ const loadData = async (searchParams: SearchParamsProps) => {
       createdBy: true,
       updatedBy: true,
     },
+    ...(limitNumber === -1 ? {} : { take: limitNumber }),
+    ...(limitNumber === -1 ? {} : { skip }),
     orderBy: {
       id: "desc",
     },
   });
 
-  return clients;
+  return { clients, count: numRows, numPages };
 };
 
 const loadCampaignTypes = () =>
@@ -103,11 +127,14 @@ export default async function ClientsPage({
               title: item.campaignType,
             })) as OptionType[]
           }
-          clients={clients as Client[]}
+          clients={clients.clients as Client[]}
         />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
-        <TableClients rows={clients as Client[]} />
+        <TableClients
+          rows={clients.clients as Client[]}
+          count={clients.count}
+        />
       </Grid>
     </Grid>
   );

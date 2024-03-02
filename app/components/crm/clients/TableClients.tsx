@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -26,12 +26,15 @@ import PopoverComments from "./PopoverComments";
 
 interface Props {
   rows: Client[];
+  count: number;
 }
 
-export default function TableClients({ rows }: Props) {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+export default function TableClients({ rows, count }: Props) {
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [idCurrent, setIdCurrent] = useState<number>(0);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -48,9 +51,45 @@ export default function TableClients({ rows }: Props) {
   const handleChangeRowsPerPage = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    const rowsPerPageCurrent = parseInt(event.target.value, 10);
+
+    setRowsPerPage(rowsPerPageCurrent);
     setPage(0);
   };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      const params = new URLSearchParams(searchParams);
+
+      if (page > 0) params.set("page", `${page + 1}`);
+      else params.delete("page");
+
+      if (rowsPerPage !== 5) params.set("limit", `${rowsPerPage}`);
+      else params.delete("limit");
+
+      replace(`${pathname}?${params.toString()}`);
+    }
+  }, [isMounted, page, rowsPerPage, searchParams, pathname, replace]);
+
+  useEffect(() => {
+    if (isMounted) {
+      const params = new URLSearchParams(searchParams);
+
+      if (params.has("page")) {
+        const pageCurrent = parseInt(params.get("page") ?? "1", 10);
+        setPage(pageCurrent - 1);
+      }
+
+      if (params.has("limit")) {
+        const limitCurrent = parseInt(params.get("limit") ?? "5", 10);
+        setRowsPerPage(limitCurrent);
+      }
+    }
+  }, [isMounted, searchParams]);
 
   return (
     <>
@@ -59,6 +98,7 @@ export default function TableClients({ rows }: Props) {
         handleClose={() => setIdCurrent(0)}
       />
       <TableDefault
+        count={count}
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}
